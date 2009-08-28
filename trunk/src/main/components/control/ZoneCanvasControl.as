@@ -57,7 +57,6 @@ private function onUseMousePoint2() : void
 private function onMouseDone(e:EditorEvent) : void
 {
 	if(!_groupCheckPoint1.selected && !_groupCheckPoint2.selected) return;
-	_groupCheckPoint1.clearAll();
 	onSetZone();
 }
 
