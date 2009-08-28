@@ -58,11 +58,12 @@ package main.control
 			}
 		}
 		
-		public function clearAll() : void
+		public function updateAll() : void
 		{
 			for each(var checkBox:GroupCheckBox in group){
 				checkBox.selected = false;
 				if(checkBox.enableFlag) checkBox.enabled = true;
+				else if(!checkBox.enableFlag) checkBox.enabled = false;
 			}
 		}
 	}

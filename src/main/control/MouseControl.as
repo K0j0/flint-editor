@@ -28,6 +28,7 @@ package main.control
 	public class MouseControl extends EventDispatcher
 	{
 		private static var instance:MouseControl;
+		private var checkBoxGroup:CheckBoxGroup;
 		private var _canvas:Canvas;
 		private var objs:Array = [];
 		private var props:Array = [];
@@ -35,6 +36,7 @@ package main.control
 		public function MouseControl(privateClass:PrivateClass, target:IEventDispatcher=null)
 		{
 			super(target);
+			checkBoxGroup = CheckBoxGroup.getInstance();
 		}
 		
 		public function set canvas(value:Canvas) : void
@@ -74,6 +76,7 @@ package main.control
 			_canvas.removeEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 			
 			dispatchEvent(new EditorEvent(EditorEvent.MOUSE_DONE));
+			checkBoxGroup.updateAll();
 		}
 		
 		private function onClick(e:MouseEvent) : void
@@ -83,6 +86,7 @@ package main.control
 			_canvas.removeEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 			
 			dispatchEvent(new EditorEvent(EditorEvent.MOUSE_DONE));
+			checkBoxGroup.updateAll();
 		}
 	}
 }

@@ -41,8 +41,3 @@ private function onClick(e:MouseEvent) : void
 	checkBoxGroup.update(this);	
 	clickFunction.call(this);
 }
-
-public function clearAll() : void
-{
-	checkBoxGroup.clearAll();
-}

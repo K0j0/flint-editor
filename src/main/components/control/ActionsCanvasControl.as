@@ -15,6 +15,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import main.control.CheckBoxGroup;
 import main.control.FXManager;
 import main.control.MouseControl;
 import main.events.EditorEvent;
@@ -31,11 +32,13 @@ import org.spicefactory.lib.reflect.Constructor;
 private var actionsList:ArrayCollection;
 private var currentActions:ArrayCollection;
 private var fxManager:FXManager;
+private var checkBoxGroup:CheckBoxGroup;
 private var mouseControl:MouseControl;
 
 public function inits() : void
 {
 	fxManager = FXManager.getInstance();
+	checkBoxGroup = CheckBoxGroup.getInstance();
 	mouseControl = MouseControl.getInstance();
 	actionsList = new ArrayCollection(["Accelerate", "AntiGravity", "Bounding Box", "Gravity Well"]);
 	_mouseGroupCheck.daClickFunction = onMouseEnabled;
@@ -60,8 +63,9 @@ private function onChooseAction() : void
 {
 	var choice:String = _actionCombo.selectedItem.toString();
 	currentState = choice;
-//	if(choice == "Accelerate" || /gravity/i.test(choice)) _mouseGroupCheck.enabled = false;
-//	else if(_mouseGroupCheck.enableFlag) _mouseGroupCheck.enabled = true;
+	if(choice == "Accelerate" || /gravity/i.test(choice)) _mouseGroupCheck.enableFlag = true;
+	else if(_mouseGroupCheck.enableFlag) _mouseGroupCheck.enableFlag = false;
+	checkBoxGroup.updateAll();
 }
 
 private function onAddAction() : void
@@ -109,7 +113,6 @@ private function onMouseEnabled() : void
 
 private function onMouseDone(e:EditorEvent) : void
 {
-	_mouseGroupCheck.clearAll();	//	!!!	centralize this
 	if(!_mouseGroupCheck.selected) return;
 	onAddAction();
 }
