@@ -43,8 +43,8 @@ private function onChooseAction() : void
 {
 	var choice:String = _actionCombo.selectedItem.toString();
 	currentState = choice;
-	if(choice == "Accelerate" || /gravity/i.test(choice)) _mouseGroupCheck.enabled = false;
-	else if(_mouseGroupCheck.enableFlag) _mouseGroupCheck.enabled = true;
+//	if(choice == "Accelerate" || /gravity/i.test(choice)) _mouseGroupCheck.enabled = false;
+//	else if(_mouseGroupCheck.enableFlag) _mouseGroupCheck.enabled = true;
 }
 
 private function onAddAction() : void
