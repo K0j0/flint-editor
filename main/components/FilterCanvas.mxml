@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="500" currentState="Blur">
+	<mx:states>
+		<mx:State name="Glow">
+			<mx:SetProperty target="{label5}" name="text" value="color"/>
+			<mx:SetProperty target="{label6}" name="text" value="alpha"/>
+			<mx:SetProperty target="{label1}" name="text" value="blurX"/>
+			<mx:SetProperty target="{label2}" name="text" value="blurY"/>
+			<mx:SetProperty target="{label3}" name="text" value="strength"/>
+			<mx:SetProperty target="{label4}" name="text" value="quality"/>
+			<mx:SetProperty target="{_filterParam2}" name="value" value="1"/>
+			<mx:SetProperty target="{_filterParam3}" name="value" value="6"/>
+			<mx:SetProperty target="{_filterParam4}" name="value" value="6"/>
+			<mx:SetProperty target="{_filterParam6}" name="value" value="1"/>
+			<mx:SetProperty target="{_filterParam5}" name="value" value="2"/>
+			<mx:SetProperty target="{label0}" name="text" value="inner"/>
+			<mx:SetProperty target="{label7}" name="text" value="knockout"/>
+			<mx:AddChild position="lastChild">
+				<mx:ColorPicker x="119" y="181" change="onChooseColor()" id="_glowColor"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{_filterParam1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_filterParam1}" name="maximum" value="16777215"/>
+		</mx:State>
+		<mx:State name="Blur">
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{_filterParam4}"/>
+			<mx:RemoveChild target="{_filterParam5}"/>
+			<mx:RemoveChild target="{_filterParam6}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:SetProperty target="{label5}" name="text" value="blurX"/>
+			<mx:SetProperty target="{label6}" name="text" value="blurY"/>
+			<mx:SetProperty target="{label1}" name="text" value="quality"/>
+			<mx:SetProperty target="{_filterParam1}" name="value" value="4"/>
+			<mx:SetProperty target="{_filterParam2}" name="value" value="4"/>
+			<mx:SetProperty target="{_filterParam3}" name="value" value="1"/>
+			<mx:RemoveChild target="{label0}"/>
+			<mx:RemoveChild target="{label7}"/>
+			<mx:RemoveChild target="{_filterParam8}"/>
+			<mx:RemoveChild target="{_filterParam7}"/>
+		</mx:State>
+	</mx:states>
+<mx:Script source="control/FilterControl.as" />
+	<mx:List x="7" y="11" height="132" id="_filterList" width="160"></mx:List>
+	<mx:Button x="177" y="12" label="add" id="_addFilter" click="onAddFilter()"/>
+	<mx:Button x="173" y="41" label="remove" id="_removeFilter" click="onRemoveFilter()"/>
+	<mx:ComboBox x="10" y="151" id="_filterCombo" change="onChooseFilter()"></mx:ComboBox>
+	<mx:NumericStepper x="10" y="181" minimum="-5000" maximum="5000" id="_filterParam1"/>
+	<mx:NumericStepper x="10" y="211" id="_filterParam2" minimum="-5000" maximum="5000"/>
+	<mx:Label x="173" y="181" text="Label" id="label5"/>
+	<mx:Label x="173" y="211" text="Label" id="label6"/>
+	<mx:NumericStepper x="10" y="241" id="_filterParam3" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="271" id="_filterParam4" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="301" id="_filterParam5" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="331" id="_filterParam6" minimum="-5000" maximum="5000"/>
+	<mx:Label x="173" y="241" text="Label" id="label1"/>
+	<mx:Label x="173" y="271" text="Label" id="label2"/>
+	<mx:Label x="173" y="301" text="Label" id="label3"/>
+	<mx:Label x="173" y="331" text="Label" id="label4"/>
+	<mx:NumericStepper x="10" y="391" id="_filterParam8" minimum="0" maximum="1" value="0"/>
+	<mx:NumericStepper x="10" y="359" id="_filterParam7" minimum="0" maximum="1" value="0"/>
+	<mx:Label x="173" y="359" text="Label" id="label0"/>
+	<mx:Label x="173" y="389" text="Label" id="label7"/>
+</mx:Canvas>
