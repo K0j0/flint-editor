@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="400" currentState="Accelerate" xmlns:ns1="main.components.*">
+<mx:Script source="control/ActionsCanvasControl.as" />
+	<mx:states>
+		<mx:State name="AntiGravity">
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{_actionsParam5}"/>
+			<mx:RemoveChild target="{_actionsParam6}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:SetStyle target="{label5}" name="textAlign" value="right"/>
+			<mx:SetProperty target="{label5}" name="text" value="power"/>
+			<mx:SetStyle target="{label6}" name="textAlign" value="left"/>
+			<mx:SetProperty target="{label6}" name="text" value="x"/>
+			<mx:SetProperty target="{label1}" name="text" value="y"/>
+			<mx:SetProperty target="{label2}" name="text" value="epsilon"/>
+		</mx:State>
+		<mx:State name="Gravity Well">
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{_actionsParam5}"/>
+			<mx:RemoveChild target="{_actionsParam6}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:SetProperty target="{label5}" name="text" value="power"/>
+			<mx:SetProperty target="{label6}" name="text" value="x"/>
+			<mx:SetProperty target="{label1}" name="text" value="y"/>
+			<mx:SetProperty target="{label2}" name="text" value="epsilon"/>
+		</mx:State>
+		<mx:State name="Accelerate">
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{_actionsParam3}"/>
+			<mx:RemoveChild target="{_actionsParam4}"/>
+			<mx:RemoveChild target="{_actionsParam5}"/>
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{_actionsParam6}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:SetProperty target="{label5}" name="text" value="Acceleration X"/>
+			<mx:SetStyle target="{label5}" name="textAlign" value="right"/>
+			<mx:SetProperty target="{label5}" name="x" value="95"/>
+			<mx:SetStyle target="{label6}" name="textAlign" value="right"/>
+			<mx:SetProperty target="{label6}" name="height" value="20"/>
+			<mx:SetProperty target="{label6}" name="text" value="Acceleration Y"/>
+			<mx:SetProperty target="{label6}" name="x" value="95"/>
+		</mx:State>
+		<mx:State name="Approach Neighbours">
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{_actionsParam3}"/>
+			<mx:RemoveChild target="{_actionsParam4}"/>
+			<mx:RemoveChild target="{_actionsParam5}"/>
+			<mx:RemoveChild target="{_actionsParam6}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:SetProperty target="{label5}" name="text" value="max distance"/>
+			<mx:SetProperty target="{label6}" name="text" value="acceleration"/>
+		</mx:State>
+		<mx:State name="Bounding Box">
+			<mx:SetProperty target="{label5}" name="text" value="left"/>
+			<mx:SetProperty target="{label6}" name="text" value="top"/>
+			<mx:SetProperty target="{label1}" name="text" value="right"/>
+			<mx:SetProperty target="{label2}" name="text" value="bottom"/>
+			<mx:SetProperty target="{label3}" name="text" value="bounce"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:RemoveChild target="{_actionsParam6}"/>
+			<mx:SetProperty target="{_actionsParam5}" name="value" value="1"/>
+			<mx:SetProperty target="{_actionsParam1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_actionsParam1}" name="maximum" value="530"/>
+			<mx:SetProperty target="{_actionsParam2}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_actionsParam2}" name="maximum" value="430"/>
+			<mx:SetProperty target="{_actionsParam3}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_actionsParam3}" name="maximum" value="530"/>
+			<mx:SetProperty target="{_actionsParam4}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_actionsParam4}" name="maximum" value="430"/>
+		</mx:State>
+		<mx:State name="Death Speed"/>
+		<mx:State name="Explosion"/>
+		<mx:State name="Friction"/>
+		<mx:State name="Scale All"/>
+		<mx:State name="Fade"/>
+		<mx:State name="Random Drift"/>
+	</mx:states>
+	<mx:List x="7" y="11" height="132" id="_actionsList" width="160"></mx:List>
+	<mx:Button x="177" y="12" label="add" id="_addAction" click="onAddAction()"/>
+	<mx:Button x="173" y="41" label="remove" id="_removeAction" click="onRemoveAction()"/>
+	<mx:ComboBox x="10" y="151" id="_actionCombo" change="onChooseAction()"></mx:ComboBox>
+	<mx:NumericStepper x="10" y="181" id="_actionsParam1" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="211" id="_actionsParam2" minimum="-5000" maximum="5000"/>
+	<mx:Label x="135" y="183" text="Label" id="label5"/>
+	<mx:Label x="135" y="213" text="Label" id="label6"/>
+	<mx:NumericStepper x="10" y="241" id="_actionsParam3" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="271" id="_actionsParam4" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="301" id="_actionsParam5" minimum="-5000" maximum="5000"/>
+	<mx:NumericStepper x="10" y="331" id="_actionsParam6" minimum="-5000" maximum="5000"/>
+	<mx:Label x="135" y="243" text="Label" id="label1"/>
+	<mx:Label x="135" y="273" text="Label" id="label2"/>
+	<mx:Label x="135" y="303" text="Label" id="label3"/>
+	<mx:Label x="135" y="333" text="Label" id="label4"/>
+	<ns1:GroupCheckBox x="171" y="71" label="use mouse" id="_mouseGroupCheck"/>
+	
+</mx:Canvas>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="135" height="230" backgroundColor="#FFFFFF" xmlns:ns1="main.components.*">
+<mx:Script source="control/BackgroundControl.as" />
+	<mx:ColorPicker x="98" y="24" id="_bgColor" change="onSetBGColor()"/>
+	<mx:Label x="10" y="10" text="Background" fontWeight="bold"/>
+	<mx:Label x="10" y="24" text="color" fontStyle="italic"/>
+	<mx:Label x="10" y="157" text="image" fontStyle="italic"/>
+	<mx:Button x="6" y="174" label="load" id="_loadImage" click="onLoadImage()"/>
+	<mx:Button x="60" y="174" label="unload" enabled="false" id="_unloadImage" click="onUnloadImage()"/>
+	<ns1:GroupCheckBox x="13" y="198" id="_groupCheckImgMove" label="mouse move" enabled="false"/>
+	
+</mx:Canvas>

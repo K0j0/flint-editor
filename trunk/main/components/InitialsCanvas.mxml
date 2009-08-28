@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="280">
+<mx:Script source="control/InitialsControl.as" />
+	<mx:ColorPicker x="10" y="21" id="_color1" change="onChangeColor()"/>
+	<mx:ColorPicker x="122" y="21" id="_color2" change="onChangeColor()"/>
+	<mx:Label x="40" y="21" text="color 1"/>
+	<mx:Label x="152" y="21" text="color 2"/>
+	<mx:NumericStepper x="10" y="67" id="_ageMin" minimum="0" maximum="600" change="onChangeAge()" value="1" stepSize=".1"/>
+	<mx:NumericStepper x="135" y="67" id="_ageMax" minimum="0" maximum="600" change="onChangeAge()" value="2" stepSize=".1"/>
+	<mx:NumericStepper x="10" y="115" id="_alphaMin" minimum="0" maximum="1.00" stepSize=".05" change="onChangeAlpha()" value="1"/>
+	<mx:NumericStepper x="122" y="115" id="_alphaMax" minimum="0" maximum="1" stepSize=".05" change="onChangeAlpha()" value="1"/>
+	<mx:NumericStepper x="10" y="162" id="_rotateVelMin" minimum="-500" maximum="500" change="onChangeRotateVelocity()" enabled="false" value="0"/>
+	<mx:NumericStepper x="122" y="162" id="_rotateVelMax" minimum="-500" maximum="500" change="onChangeRotateVelocity()" enabled="false" value="0"/>
+	<mx:NumericStepper x="10" y="204" id="_scaleMin" minimum="-100" maximum="100" change="onChangeScale()" enabled="false" stepSize=".1" value="1"/>
+	<mx:NumericStepper x="10" y="248" id="_rotationMin" minimum="-360" maximum="360" change="onChangeRotation()" enabled="false" stepSize="15"/>
+	<mx:NumericStepper x="122" y="248" id="_rotationMax" minimum="-360" maximum="360" change="onChangeRotation()" enabled="false" stepSize="15"/>
+	<mx:NumericStepper x="122" y="204" id="_scaleMax" minimum="-100" maximum="100" change="onChangeScale()" enabled="false" stepSize=".1" value="1"/>
+	<mx:Label x="10" y="0" text="color" fontWeight="bold"/>
+	<mx:Label x="10" y="97" text="alpha" fontWeight="bold"/>
+	<mx:Label x="10" y="231" text="rotation" fontWeight="bold"/>
+	<mx:Label x="11" y="189" text="scale" fontWeight="bold"/>
+	<mx:Label x="94" y="69" text="min"/>
+	<mx:Label x="76" y="115" text="min"/>
+	<mx:Label x="188" y="115" text="max"/>
+	<mx:Label x="88" y="164" text="min"/>
+	<mx:Label x="200" y="164" text="max"/>
+	<mx:Label x="92" y="206" text="min"/>
+	<mx:Label x="200" y="206" text="max"/>
+	<mx:Label x="88" y="252" text="min"/>
+	<mx:Label x="200" y="252" text="max"/>
+	<mx:Label x="219" y="69" text="max"/>
+	<mx:CheckBox x="10" y="141" label="rotate velocity" fontWeight="bold" id="_rotateVelCheckBox" click="onSetRotateVelocity()" enabled="false"/>
+	<mx:CheckBox x="10" y="47" label="age" fontWeight="bold" id="_ageCheckBox" click="onSetAge()" selected="true"/>
+</mx:Canvas>

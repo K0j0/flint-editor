@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="160" height="170">
+<mx:Script source="control/EmitterControl.as" />
+	<mx:List x="5.5" y="8" width="149" height="85" id="_emittersList" doubleClickEnabled="true"></mx:List>
+	<mx:Button x="10" y="138" label="add" id="_addBtn" click="onAddEmitter()"/>
+	<mx:Button x="85" y="138" label="remove" id="_removeBtn" enabled="false" click="onRemoveEmitter()"/>
+	<mx:Label x="10" y="101" text="currently selected" fontWeight="bold"/>
+	<mx:Label x="10" y="115" text="{selectedEmitter}" id="_selectedEmitter"/>
+	
+</mx:Canvas>
