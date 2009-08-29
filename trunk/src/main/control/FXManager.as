@@ -21,11 +21,13 @@ package main.control
 	import flash.display.BitmapData;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.events.TimerEvent;
 	import flash.filters.BitmapFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.CompressionAlgorithm;
+	import flash.utils.Timer;
 	
 	import main.events.EditorEvent;
 	
@@ -87,7 +89,7 @@ package main.control
 		
 		public function FXManager(privateClass:PrivateClass, target:IEventDispatcher=null)
 		{
-			super(target);			
+			super(target);	
 		}
 		
 		public static function getInstance() : FXManager
@@ -381,6 +383,7 @@ package main.control
 			else if(currentEmitters == bitmapEmitters){
 				currentInitializers = bitmapInitializersGroup[index];
 				currentActions = bitmapActionsGroup[index];
+				currentBitmaps = bitmapsGroup[index];
 				currentBitmapNames = bitmapNamesGroup[index];
 			}			
 			dispatchEvent(new EditorEvent(EditorEvent.UPDATE_REFERENCES));

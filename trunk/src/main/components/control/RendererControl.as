@@ -72,11 +72,17 @@ public function init() : void
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
 }
 
-private function onUpdateReferences(e:EditorEvent) : void
+private function onUpdateReferences(e:EditorEvent = null) : void
 {
 	renderer = fxManager.getRenderer();
-	bitmaps = fxManager.getBitmaps();
-	bitmapNames = fxManager.getBitmapNames();
+	if(bitmaps != fxManager.getBitmaps()){
+		bitmaps = fxManager.getBitmaps();
+		bitmapNames = fxManager.getBitmapNames();
+		if(bitmaps.length > 0){
+			bitmap = bitmaps[0];
+			selectedImage = bitmapNames[0];
+		}
+	}
 	_imagesList.dataProvider = bitmapNames;
 	_removeImage.enabled = bitmaps.length > 1 ? true : false;
 }
@@ -119,6 +125,7 @@ private function onChangeImageName(e:ListEvent) : void
 	var index:int = e.rowIndex;
 	var name:String = e.itemRenderer.data.toString();
 	fxManager.changeImageName(name, index);
+	selectedImage = bitmapNames[index];
 	_imagesList.editable = false;
 }
 
