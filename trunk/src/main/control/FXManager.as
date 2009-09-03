@@ -21,13 +21,11 @@ package main.control
 	import flash.display.BitmapData;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import flash.events.TimerEvent;
 	import flash.filters.BitmapFilter;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.CompressionAlgorithm;
-	import flash.utils.Timer;
 	
 	import main.events.EditorEvent;
 	
@@ -156,6 +154,16 @@ package main.control
 		public function getFilters() : ArrayCollection
 		{
 			return currentFilters;
+		}
+		
+		public function getCounterInfo() : Array
+		{
+			var counter:XML = desc.effect.emitter[index].counter.*[0];
+			var params:Array = [counter.name().toString()];
+			for each(var node:XML in counter.children()){
+				params.push(Number(node.toString()))
+			}			
+			return params;
 		}
 		
 		public function initialize(editor:FlintEditor, desc:FXDescriptor) : void

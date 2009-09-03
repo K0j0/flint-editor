@@ -28,7 +28,7 @@
 			<mx:SetProperty target="{_paramLabel1}" name="x" value="90"/>
 			<mx:SetProperty target="{_paramLabel1}" name="y" value="82"/>
 		</mx:State>
-		<mx:State name="Performance Adjusted">
+		<mx:State name="PerformanceAdjusted">
 			<mx:SetProperty target="{_paramLabel1}" name="text" value="min rate"/>
 			<mx:SetProperty target="{_paramLabel2}" name="text" value="max rate"/>
 			<mx:SetProperty target="{_paramLabel3}" name="text" value="framerate"/>
@@ -74,7 +74,7 @@
 			<mx:SetProperty target="{_paramLabel1}" name="x" value="98"/>
 			<mx:SetProperty target="{_paramLabel2}" name="x" value="94"/>
 		</mx:State>
-		<mx:State name="Sine Counter">
+		<mx:State name="SineCounter">
 			<mx:SetProperty target="{_paramLabel1}" name="text" value="period"/>
 			<mx:SetProperty target="{_paramLabel2}" name="text" value="min rate"/>
 			<mx:SetProperty target="{_paramLabel3}" name="text" value="max rate"/>
@@ -98,9 +98,8 @@
 			<mx:SetProperty target="{_paramLabel1}" name="text" value="rate"/>
 			<mx:SetProperty target="{_paramStep1}" name="minimum" value="0"/>
 			<mx:SetProperty target="{_paramStep1}" name="maximum" value="5000"/>
-			<mx:SetProperty target="{_paramStep1}" name="value" value="2000"/>
 		</mx:State>
-		<mx:State name="Time Period">
+		<mx:State name="TimePeriod">
 			<mx:RemoveChild target="{_paramStep3}"/>
 			<mx:RemoveChild target="{_paramLabel3}"/>
 			<mx:SetProperty target="{_paramLabel1}" name="text" value="quantity"/>

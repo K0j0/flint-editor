@@ -16,6 +16,7 @@
  */
 
 import main.control.FXManager;
+import main.events.EditorEvent;
 
 import mx.collections.ArrayCollection;
 
@@ -24,26 +25,55 @@ import org.spicefactory.lib.reflect.ClassInfo;
 import org.spicefactory.lib.reflect.Constructor;
 
 private var fxManager:FXManager;
-private var counterList:ArrayCollection = new ArrayCollection(["Blast", "Performance Adjusted", "Pulse", "Random", "Sine Counter", "Steady", "Time Period"]);
+private var counterName:String;
+private var counterList:ArrayCollection = new ArrayCollection(["Blast", "PerformanceAdjusted", "Pulse", "Random", "SineCounter", "Steady", "TimePeriod"]);
 
 public function init() : void
 {
 	_counterCombo.dataProvider = counterList;
 	_counterCombo.selectedIndex = 5;
 	fxManager = FXManager.getInstance();
+	
+	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
+}
+
+private function onUpdateReferences(e:EditorEvent = null) : void
+{
+	var params:Array = fxManager.getCounterInfo();
+	counterName = params.shift();
+	currentState = counterName;
+	
+	var len:int = counterList.length;
+	for(var j:int = 0; j < len; j++){
+		if(counterList[j] == counterName){
+			_counterCombo.selectedIndex = j;
+			break;
+		}
+	}
+	
+	len = params.length;	
+	for(j = 1; j <= len; j++){
+		this["_paramStep" + j].value = params[j-1];
+	}
 }
 
 private function onSelectCounter() : void
 {
 	var name:String = _counterCombo.selectedItem.toString();
 	currentState = name;
+	if(name == counterName) onUpdateReferences();
+	else{
+		for(var j:int = 1; j <= 3; j++){
+			this["_paramStep" + j].value = 0;
+		}
+	}
 }
 
 private function onSetCounter() : void
 {
-	var name:String = _counterCombo.selectedItem.toString();
-	name = name.replace(/\s+/, "");
-	var ci:ClassInfo = ClassInfo.forName("org.flintparticles.common.counters." + name);
+	counterName = _counterCombo.selectedItem.toString();
+	counterName = counterName.replace(/\s+/, "");
+	var ci:ClassInfo = ClassInfo.forName("org.flintparticles.common.counters." + counterName);
 	var con:Constructor = ci.getConstructor();
 	
 	var params:Array = [];
@@ -52,6 +82,6 @@ private function onSetCounter() : void
 		if(this.contains(this["_paramStep" + j])) params.push(this["_paramStep" + j].value);
 	}
 	var counter:Counter = con.newInstance(params);
-	params.unshift(name);
+	params.unshift(counterName);
 	fxManager.setCounter(counter, params);
 }
