@@ -367,11 +367,10 @@ package main.control
 				}
 				filterString += params + ");\n";
 				allFiltersString += filterString;
-				addFilterString += "filter" + j;
-				if(j < len - 1) addFilterString += ",";
+				addFilterString += "renderer.addFilter(filter" + j + ");\n";
 			}
 			particleClass += allFiltersString + "\n";
-			particleClass += "renderer.filters = [" + addFilterString + "];\n";
+			particleClass += addFilterString;
 			particleClass += "addChild(renderer);\n";
 			
 			var importsString:String = "";
