@@ -223,6 +223,9 @@ package main.control
 		public function clearEffect() : void
 		{
 			for each(var e:Emitter2D in currentEmitters){
+				for each(var f:BitmapFilter in currentFilters){
+					renderer.removeFilter(f);
+				}
 				e.stop();
 				e.killAllParticles();
 				renderer.removeEmitter(e);
@@ -234,6 +237,9 @@ package main.control
 			for each(var e:Emitter2D in currentEmitters){
 				e.start();
 				renderer.addEmitter(e);
+				for each(var f:BitmapFilter in currentFilters){
+					renderer.addFilter(f);
+				}
 			}
 		}
 		
@@ -639,7 +645,7 @@ package main.control
 		{
 			currentFilters.addItem(f);
 			desc.addFilter(params);
-			renderer.addFilter(f, true);
+			renderer.addFilter(f, false);
 		}
 		
 		public function removeFilter(index:int) : void
