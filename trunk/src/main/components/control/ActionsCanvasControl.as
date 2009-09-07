@@ -40,7 +40,11 @@ public function inits() : void
 	fxManager = FXManager.getInstance();
 	checkBoxGroup = CheckBoxGroup.getInstance();
 	mouseControl = MouseControl.getInstance();
-	actionsList = new ArrayCollection(["Accelerate", "AntiGravity", "Bounding Box", "Gravity Well"]);
+	actionsList = new ArrayCollection(["Accelerate", "AntiGravity", "ApproachNeighbours", "BoundingBox",
+										"Collide", "DeathSpeed", "Explosion", "Fade", "Friction", "GravityWell", "LinearDrag",
+										"MatchRotateVelocity", "MinimumDistance", "MutualGravity", "QuadraticDrag", "RandomDrift",
+										"RotationalFriction", "RotationalLinearDrag", "RotationalQuadraticDrag", "ScaleAll", 
+										"SpeedLimit", "TargetRotateVelocity", "TurnTowardsPoint", "TweenPosition"]);
 	_mouseGroupCheck.daClickFunction = onMouseEnabled;
 	
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);

@@ -420,6 +420,7 @@ package main.control
 			sharedImages = new SharedImages(currentBitmaps);
 			currentInitializers["SharedImages"] = sharedImages;
 			currentEmitter.addInitializer(sharedImages);
+			desc.addImage(bmp, "bitmap");
 			setEffect("bitmap");
 		}
 		
@@ -432,13 +433,21 @@ package main.control
 			sharedImages = new SharedImages(currentBitmaps);
 			currentInitializers["SharedImages"] = sharedImages;
 			currentEmitter.addInitializer(sharedImages);
+			desc.removeImage(index);
 			setEffect("bitmap");		
 		}
 		
 		public function changeImageName(name:String, index:int) : void
 		{
 			currentBitmapNames.addItemAt(name, index);
+			desc.editImageProperties(index, "name", name);
 			currentBitmapNames.removeItemAt(++index);
+		}
+		
+		public function changeImageBlendMode(index:int, blendMode:String) : void
+		{
+			currentBitmaps[index].blendMode = blendMode;
+			desc.editImageProperties(index, "blendMode", blendMode);
 		}
 		
 		public function generateImages(bytes:ByteArray) : void
@@ -474,7 +483,6 @@ package main.control
 				var emitter:Emitter2D = bitmapEmitters[j];
 				var sharedImages:SharedImages = new SharedImages(imageArray);
 				emitter.addInitializer(sharedImages);
-				delete effect.child("emitter")[j].initializers.SharedImages;
 			}
 			currentBitmaps = imageArray;
 			bitmapsGroup = bitmaps;

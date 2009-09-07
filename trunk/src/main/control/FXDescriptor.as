@@ -30,12 +30,12 @@ package main.control
 	{
 		private var fxManager:FXManager;
 		private var pixelEffect:XML = 
-									<effect>
+									<effect type="pixel">
 										<filters />
 										<blendMode>normal</blendMode>
 									</effect>;
 		private var bitmapEffect:XML = 
-									<effect>
+									<effect type="bitmap">
 										<filters />
 										<blendMode>normal</blendMode>
 									</effect>;
@@ -69,10 +69,17 @@ package main.control
 		
 		public function addEmitter() : void
 		{
-			var emitterNode:XML = 
+			var emitterNode:XML = currentEffect.@type == "pixel" ?
 								<emitter name="emitter">
 									<counter />
 									<initializers />
+									<actions />									
+								</emitter> :
+								<emitter name="emitter">
+									<counter />
+									<initializers>
+										<SharedImages />
+									</initializers>
 									<actions />									
 								</emitter>;
 			
@@ -131,6 +138,33 @@ package main.control
 			delete currentEffect.emitter[eIndex].initializers.child(name)[0];
 		}
 		
+		public function addImage(bitmap:Bitmap, name:String) : void
+		{
+			var rect:Rectangle = new Rectangle(0, 0, bitmap.width, bitmap.height);
+			var imageBytes:ByteArray = bitmap.bitmapData.getPixels(rect);
+			imageBytes.compress(CompressionAlgorithm.DEFLATE);
+			var image:XML = <image />;
+			image.@length = imageBytes.length;
+			image.@width = bitmap.width;
+			image.@height = bitmap.height;
+			image.@blendMode = bitmap.blendMode;
+			image.@name = name;
+			currentEffect.emitter[eIndex].initializers.SharedImages.appendChild(image);
+			imageBytes = null;
+		}
+		
+		public function removeImage(index:int) : void
+		{
+			delete currentEffect.emitter[eIndex].initializers.SharedImages.*[index];
+		}
+		
+		public function editImageProperties(index:int, prop:String, val:String) : void
+		{
+			var image:XML = currentEffect.emitter[eIndex].initializers.SharedImages.*[index];
+			if(prop == "name") image.@name = val;
+			else if(prop == "blendMode") image.@blendMode = val;
+		}
+		
 		public function setProperty(type:String, params:Array) : void
 		//	used to set counters and add actions
 		{
@@ -174,24 +208,14 @@ package main.control
 				var bitmapNames:Array = fxManager.getAllBitmapNames();
 				for(var j:int = 0; j < bitmaps.length; j++){
 					emitterIndex = j;
-					var sharedImages:XML = <SharedImages />;
 					var currentBitmaps:Array = bitmaps[j];
-					var currentBitmapNames:ArrayCollection = bitmapNames[j];
 					for(var i:int = 0; i < currentBitmaps.length; i++){
 						var bmp:Bitmap = currentBitmaps[i];
 						var rect:Rectangle = new Rectangle(0, 0, bmp.width, bmp.height);
 						var currentImgBytes:ByteArray = bmp.bitmapData.getPixels(rect);
 						currentImgBytes.compress(CompressionAlgorithm.DEFLATE);
-						var image:XML = <image />;
-						image.@length = currentImgBytes.length;
-						image.@width = bmp.width;
-						image.@height = bmp.height;
-						image.@blendMode = bmp.blendMode;
-						image.@name = currentBitmapNames[i];
-						sharedImages.appendChild(image);
 						imgBytes.writeBytes(currentImgBytes);
 					}
-					savedEffect.emitter[eIndex].initializers.appendChild(sharedImages);
 				}
 				bytes.writeInt(savedEffect.toXMLString().length);
 				bytes.writeUTFBytes(savedEffect.toXMLString());

@@ -31,12 +31,12 @@ import org.flintparticles.twoD.renderers.BitmapRenderer;
 
 private var fxManager:FXManager;
 private var renderer:BitmapRenderer;
-private var bitmap:Bitmap;
+private var selectedImage:Object = {bitmap:null, index:0};
 private var bitmaps:Array;
 private var bitmapNames:ArrayCollection;
 private var imgIndex:int = -1;
 [Bindable]
-private var selectedImage:String = "n/a";
+private var selectedImageName:String = "n/a";
 private var blendModesArray:Array = [];
 
 public function init() : void
@@ -79,8 +79,8 @@ private function onUpdateReferences(e:EditorEvent = null) : void
 		bitmaps = fxManager.getBitmaps();
 		bitmapNames = fxManager.getBitmapNames();
 		if(bitmaps.length > 0){
-			bitmap = bitmaps[0];
-			selectedImage = bitmapNames[0];
+			selectedImage.bitmap = bitmaps[0];
+			selectedImageName = bitmapNames[0];
 		}
 	}
 	_imagesList.dataProvider = bitmapNames;
@@ -123,17 +123,18 @@ private function onDoubleClickImagesList(e:ListEvent) : void
 private function onChangeImageName(e:ListEvent) : void
 {
 	var index:int = e.rowIndex;
-	var name:String = e.itemRenderer.data.toString();
+	var name:String = e.target.itemEditorInstance.text;
 	fxManager.changeImageName(name, index);
-	selectedImage = bitmapNames[index];
+	selectedImageName = bitmapNames[index];
 	_imagesList.editable = false;
 }
 
 private function onSelectImage(e:ListEvent) : void
 {
 	imgIndex = e.rowIndex;
-	bitmap = bitmaps[imgIndex];
-	selectedImage = bitmapNames[imgIndex];
+	selectedImage.bitmap = bitmaps[imgIndex];
+	selectedImage.index = imgIndex;
+	selectedImageName = bitmapNames[imgIndex];
 	_imageBlendMode.selectedIndex = blendModesArray[bitmaps[imgIndex].blendMode];
 }
 
@@ -148,8 +149,8 @@ private function onChooseBlendMode() : void
 private function onChooseImageBlendMode() : void
 {
 	var blendMode:String = _imageBlendMode.selectedItem.toString();
-	if(bitmap) bitmap.blendMode = blendMode;
-	trace("Image " + _imagesList.selectedIndex + " blendmode is " + blendMode);
+	if(selectedImage.bitmap) fxManager.changeImageBlendMode(selectedImage.index, blendMode);
+	trace("Image " + selectedImage.index + " blendmode is " + blendMode);
 }
 
 private function onAddImage() : void
