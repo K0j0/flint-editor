@@ -69,29 +69,32 @@ private function onRendererSwitch(e:EditorEvent) : void
 private function onUpdateReferences(e:EditorEvent = null) : void
 {
 	initializers = fxManager.getInitializers();	
+	//	update alpha
 	var alphaInit:AlphaInit = initializers["AlphaInit"];
 	if(alphaInit){
 		_alphaMin.value = alphaInit.minAlpha;
 		_alphaMax.value = alphaInit.maxAlpha;
 	}
+	//	update color
 	var colorInit:ColorInit = initializers["ColorInit"];
 	if(colorInit){
 		_color1.selectedColor = colorInit.minColor;
 		_color2.selectedColor = colorInit.maxColor;
 	}
+	//	update lifetime
 	var lifeTime:Lifetime = initializers["Lifetime"];
 	if(lifeTime){
 		_ageMin.value = lifeTime.minLifetime;
 		_ageMax.value = lifeTime.maxLifetime;
 	}
+	//	update rotation
 	var rotation:Rotation = initializers["Rotation"];
 	if(rotation){
 		_rotationMin.value = rotation.minAngle;
 		_rotationMax.value = rotation.maxAngle;
 	}
+	//	update rotate velocity
 	var actions:ArrayCollection = fxManager.getActions();
-	_rotateVelMin.enabled = false;
-	_rotateVelMax.enabled = false;
 	_rotateVelCheckBox.selected = false;
 	for each(var a:Action in actions){
 		if(a is Rotate){
@@ -99,13 +102,13 @@ private function onUpdateReferences(e:EditorEvent = null) : void
 			if(rotateVelocity){
 				_rotateVelMin.value = rotateVelocity.minAngVelocity;
 				_rotateVelMax.value = rotateVelocity.maxAngVelocity;
-				_rotateVelMin.enabled = true;
-				_rotateVelMax.enabled = true;
 				_rotateVelCheckBox.selected = true;
 			}
 			break;			
 		}
 	}
+	onSetRotateVelocity();
+	//	update scale
 	var scaleImageInit:ScaleImageInit = initializers["ScaleImageInit"];
 	if(scaleImageInit){
 		_scaleMin.value = scaleImageInit.minScale;
@@ -183,6 +186,7 @@ private function onSetRotateVelocity() : void
 		fxManager.addAction(new Rotate(), ["Rotate"]);
 		_rotateVelMin.enabled = true;
 		_rotateVelMax.enabled = true;
+		onChangeRotateVelocity();
 	}
 	else{
 		var actions:ArrayCollection = fxManager.getActions();
