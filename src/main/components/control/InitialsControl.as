@@ -20,6 +20,7 @@ import main.events.EditorEvent;
 
 import mx.collections.ArrayCollection;
 
+import org.flintparticles.common.actions.Action;
 import org.flintparticles.common.actions.Age;
 import org.flintparticles.common.initializers.AlphaInit;
 import org.flintparticles.common.initializers.ColorInit;
@@ -88,10 +89,22 @@ private function onUpdateReferences(e:EditorEvent = null) : void
 		_rotationMin.value = rotation.minAngle;
 		_rotationMax.value = rotation.maxAngle;
 	}
-	var rotateVelocity:RotateVelocity = initializers["RotateVelocity"];
-	if(rotateVelocity){
-		_rotateVelMin.value = rotateVelocity.minAngVelocity;
-		_rotateVelMax.value = rotateVelocity.maxAngVelocity;
+	var actions:ArrayCollection = fxManager.getActions();
+	_rotateVelMin.enabled = false;
+	_rotateVelMax.enabled = false;
+	_rotateVelCheckBox.selected = false;
+	for each(var a:Action in actions){
+		if(a is Rotate){
+			var rotateVelocity:RotateVelocity = initializers["RotateVelocity"];
+			if(rotateVelocity){
+				_rotateVelMin.value = rotateVelocity.minAngVelocity;
+				_rotateVelMax.value = rotateVelocity.maxAngVelocity;
+				_rotateVelMin.enabled = true;
+				_rotateVelMax.enabled = true;
+				_rotateVelCheckBox.selected = true;
+			}
+			break;			
+		}
 	}
 	var scaleImageInit:ScaleImageInit = initializers["ScaleImageInit"];
 	if(scaleImageInit){
