@@ -22,8 +22,6 @@ package main.control
 	import flash.utils.ByteArray;
 	import flash.utils.CompressionAlgorithm;
 	
-	import mx.collections.ArrayCollection;
-	
 	import org.spicefactory.lib.reflect.ClassInfo;
 	
 	public class FXDescriptor
@@ -138,7 +136,7 @@ package main.control
 			delete currentEffect.emitter[eIndex].initializers.child(name)[0];
 		}
 		
-		public function addImage(bitmap:Bitmap, name:String) : void
+		public function addImage(bitmap:Bitmap, path:String) : void
 		{
 			var rect:Rectangle = new Rectangle(0, 0, bitmap.width, bitmap.height);
 			var imageBytes:ByteArray = bitmap.bitmapData.getPixels(rect);
@@ -148,7 +146,8 @@ package main.control
 			image.@width = bitmap.width;
 			image.@height = bitmap.height;
 			image.@blendMode = bitmap.blendMode;
-			image.@name = name;
+			image.@name = "bitmap";
+			image.@path = path;
 			currentEffect.emitter[eIndex].initializers.SharedImages.appendChild(image);
 			imageBytes = null;
 		}
@@ -306,10 +305,11 @@ package main.control
 				var initializersArray:Array = [];
 				len = initializers.children().length();
 				for(j = 0; j < len; j++){
-					var initializerName:String = emitterName + "_initializer" + j;
-					initializersArray.push(initializerName);
 					var initializer:XML = initializers.*[j];
 					name = initializer.name();
+					if(name == "SharedImages") continue;
+					var initializerName:String = emitterName + "_initializer" + j;
+					initializersArray.push(initializerName);
 					var initializerString:String = "var " + initializerName + ":" + name + " = ";
 					params = "";
 					func(initializer);
@@ -349,6 +349,24 @@ package main.control
 				particleClass += allInitializers;
 				for each(s in initializersArray){
 					particleClass += emitterName + ".addInitializer(" + s + ");\n";
+				}
+				//	get images
+				if(currentEffect == bitmapEffect){
+					imports.push("flash.display.Bitmap;");
+					imports.push("org.flintparticles.common.initializers.SharedImages;");
+					var sharedImages:XML = emitter.initializers.SharedImages[0];
+					var embedString:String = "";
+					var sharedImagesParams:String = "";
+					len = sharedImages.children().length();
+					for(j = 0; j < len; j++){
+						var image:XML = sharedImages.*[j];
+						embedString += "\n[Embed (source=\"" + image.@path + "\")]\nprivate var imgClass_" + emitterName + "_" + j
+						 + ":Class;\nprivate var " + image.@name + "_" + emitterName + "_" + j + ":Bitmap = new imgClass_" + emitterName + "_" + j
+						 + "();\n";
+						 sharedImagesParams += image.@name + "_" + emitterName + "_" + j;
+						 if(j < len-1) sharedImagesParams += ",";
+					}
+					particleClass += emitterName + ".addInitializer(new SharedImages([" + sharedImagesParams + "]));\n";
 				}
 				particleClass += "\n";
 			}
@@ -410,7 +428,7 @@ package main.control
 				importsString += "import " + s + "\n";
 			}
 			particleClass = "package\n{\n" + importsString + "\npublic class ParticleEffect extends Sprite\n{\n" +
-					"\npublic function ParticleEffect() : void\n{\n" + particleClass
+					embedString + "\npublic function ParticleEffect() : void\n{\n" + particleClass
 					+ "}\n}\n}";
 			
 			return particleClass;
