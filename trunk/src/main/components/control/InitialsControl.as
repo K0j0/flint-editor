@@ -107,7 +107,7 @@ private function onUpdateReferences(e:EditorEvent = null) : void
 			break;			
 		}
 	}
-	onSetRotateVelocity();
+	onSetRotateVelocity(false);
 	//	update scale
 	var scaleImageInit:ScaleImageInit = initializers["ScaleImageInit"];
 	if(scaleImageInit){
@@ -180,10 +180,10 @@ private function onChangeRotateVelocity() : void
 	fxManager.updateInitializer("RotateVelocity", ["RotateVelocity", min, max]);
 }
 
-private function onSetRotateVelocity() : void
+private function onSetRotateVelocity(needsRotate:Boolean = true) : void
 {
 	if(_rotateVelCheckBox.selected){ 
-		fxManager.addAction(new Rotate(), ["Rotate"]);
+		if(needsRotate) fxManager.addAction(new Rotate(), ["Rotate"]);
 		_rotateVelMin.enabled = true;
 		_rotateVelMax.enabled = true;
 		onChangeRotateVelocity();
