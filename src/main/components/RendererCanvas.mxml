@@ -40,7 +40,7 @@
 				<mx:Label x="10" y="121" text="selected image:"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Label x="108" y="121" text="{selectedImage}" id="_selectedImage"/>
+				<mx:Label x="108" y="121" text="{selectedImageName}" id="_selectedImage"/>
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
