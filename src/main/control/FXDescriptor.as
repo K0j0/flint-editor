@@ -363,6 +363,7 @@ package main.control
 						embedString += "\n[Embed (source=\"" + image.@path + "\")]\nprivate var imgClass_" + emitterName + "_" + j
 						 + ":Class;\nprivate var " + image.@name + "_" + emitterName + "_" + j + ":Bitmap = new imgClass_" + emitterName + "_" + j
 						 + "();\n";
+						 particleClass += image.@name + "_" + emitterName + "_" + j + ".blendMode = " + "\"" + image.@blendMode + "\";\n";
 						 sharedImagesParams += image.@name + "_" + emitterName + "_" + j;
 						 if(j < len-1) sharedImagesParams += ",";
 					}
