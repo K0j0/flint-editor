@@ -184,7 +184,6 @@ private function onCancel(e:Event) : void
 private function onImageLoaded(e:Event) : void 
 {
 	var bitmap:Bitmap = e.target.content;
-	bitmapNames.addItem("bitmap");
 	fxManager.addImage(bitmap, e.target.url);
 	trace("Image successfully loaded");
 }
