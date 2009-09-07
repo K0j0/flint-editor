@@ -411,7 +411,7 @@ package main.control
 			restartEffect();
 		}
 		
-		public function addImage(bmp:Bitmap) : void
+		public function addImage(bmp:Bitmap, path:String) : void
 		{
 			setEffect("bitmap", false);
 			currentBitmaps.push(bmp);
@@ -420,7 +420,7 @@ package main.control
 			sharedImages = new SharedImages(currentBitmaps);
 			currentInitializers["SharedImages"] = sharedImages;
 			currentEmitter.addInitializer(sharedImages);
-			desc.addImage(bmp, "bitmap");
+			desc.addImage(bmp, path);
 			setEffect("bitmap");
 		}
 		
