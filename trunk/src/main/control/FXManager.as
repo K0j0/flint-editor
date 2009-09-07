@@ -341,10 +341,12 @@ package main.control
 				bitmapActionsGroup.push(actions);
 				bitmapInitializersGroup.push(initializers);
 
-				if(currentBitmaps.length > 0){
+				var bitmaps:Array = bitmapsGroup[bitmapsGroup.length-1];
+				var bitmapNames:ArrayCollection = bitmapNamesGroup[bitmapNamesGroup.length-1];
+				if(bitmaps.length > 0){
 					var images:Array = [];
-					var imageNames:ArrayCollection = new ArrayCollection(currentBitmapNames.toArray());
-					for each(var b:Bitmap in currentBitmaps){
+					var imageNames:ArrayCollection = new ArrayCollection(bitmapNames.toArray());
+					for each(var b:Bitmap in bitmaps){
 						var bmp:Bitmap = new Bitmap(b.bitmapData.clone());
 						images.push(bmp);
 					}
@@ -415,6 +417,7 @@ package main.control
 		{
 			setEffect("bitmap", false);
 			currentBitmaps.push(bmp);
+			currentBitmapNames.addItem("bitmap");
 			var sharedImages:SharedImages =  currentInitializers["SharedImages"];
 			if(sharedImages) currentEmitter.removeInitializer(sharedImages)
 			sharedImages = new SharedImages(currentBitmaps);

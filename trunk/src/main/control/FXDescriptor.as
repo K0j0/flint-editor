@@ -67,12 +67,17 @@ package main.control
 		
 		public function addEmitter() : void
 		{
-			var emitterNode:XML = currentEffect.@type == "pixel" ?
+			var emitterNode:XML;
+			if(currentEffect.@type == "pixel"){
+				emitterNode =
 								<emitter name="emitter">
 									<counter />
 									<initializers />
 									<actions />									
-								</emitter> :
+								</emitter>;				
+			}
+			else if(currentEffect.@type == "bitmap"){
+				emitterNode =
 								<emitter name="emitter">
 									<counter />
 									<initializers>
@@ -80,6 +85,12 @@ package main.control
 									</initializers>
 									<actions />									
 								</emitter>;
+				var emitterCount:int = effect.emitter.length();
+				if(emitterCount > 0){
+					var sharedImages:XML = currentEffect.emitter[emitterCount-1].initializers.SharedImages[0];
+					emitterNode.initializers.SharedImages = sharedImages;
+				}		
+			}
 			
 			currentEffect.appendChild(emitterNode);
 			eIndex = effect.emitter.length() - 1;
