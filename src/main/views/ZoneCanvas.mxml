@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) <2009>  <Kojo Kumah>
+ 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+ 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="250" currentState="Disc" xmlns:ns1="main.components.*">
+	<mx:states>
+		<mx:State name="Point">
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="99" id="_stepX" minimum="-500" maximum="500"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="88" y="101" text="x" id="label2"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="138" y="101" id="_stepY" minimum="-500" maximum="500"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="216" y="103" text="y" id="label1"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="10" y="73" text="Point" id="label3" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<ns1:GroupCheckBox x="88" y="71" id="_groupCheckPoint1" label="use mouse"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Disc" basedOn="Point">
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="146" minimum="-500" maximum="500" id="_stepInner"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="199" minimum="-360" maximum="360" id="_stepCW" value="360"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="138" y="146" minimum="-500" maximum="500" id="_stepOuter" value="200"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="138" y="197" minimum="-360" maximum="360" id="_stepCCW"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="88" y="148" text="inner"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="88" y="201" text="CW"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="216" y="148" text="outer"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="216" y="199" text="CCW"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="10" y="126" text="Radius" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="10" y="174" text="Angle" fontWeight="bold"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Line" basedOn="Point">
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="199" minimum="-500" maximum="500" id="_stepX2"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="138" y="201" minimum="-500" maximum="500" id="_stepY2"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="88" y="201" text="x"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="216" y="203" text="y"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{label3}" name="text" value="Point 1"/>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="10" y="173" text="Point 2" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild" creationPolicy="all">
+				<ns1:GroupCheckBox x="88" y="173" id="_groupCheckPoint2" label="use mouse"/>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Rectangle">
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="138" minimum="-500" maximum="500" id="_left"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="26" y="110" text="Left" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="95" y="92" minimum="-500" maximum="500" id="_top"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="117.5" y="66" text="Top" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="180" y="138" minimum="-500" maximum="500" id="_right"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="195" y="110" text="Right" fontWeight="bold"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="95" y="197" minimum="-500" maximum="500" id="_bottom"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="106" y="171" text="Bottom" fontWeight="bold"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+<mx:Script source="control/ZoneCanvasControl.as" />
+	<mx:RadioButtonGroup id="_radioZone"/>
+	<mx:RadioButton x="181" y="10" groupName="_radioZone" id="_posZone" selected="true" enabled="false" click="onSelectZoneType()" label="Position"/>
+	<mx:RadioButton x="181" y="36" groupName="_radioZone" id="_velZone" click="onSelectZoneType()" label="Velocity"/>
+	<mx:ComboBox x="10" y="10" id="_zoneCombo" change="onChooseZone()" width="163"></mx:ComboBox>
+	<mx:Button x="55" y="36" label="remove velocity" id="_removeVel" enabled="false" click="onRemoveVelocity()"/>
+	<mx:Button x="10" y="36" label="set" click="onSetZone()"/>
+</mx:Canvas>
