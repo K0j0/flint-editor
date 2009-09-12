@@ -20,7 +20,7 @@ import flash.display.Loader;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.IOErrorEvent;
-import flash.filesystem.File;
+//import flash.filesystem.File;
 import flash.net.URLRequest;
 
 import main.utils.checkgroup.model.CheckBoxGroup;
@@ -55,10 +55,12 @@ private function onSetBGColor() : void
 
 private function onLoadImage() : void
 {
+	/* 
 	var file:File = new File();
 	file.browseForOpen("Choose Image");
 	file.addEventListener(Event.SELECT, onSelectFile);
 	file.addEventListener(Event.CANCEL, onCancel);
+	 */
 }
 
 private function onSelectFile(e:Event) : void

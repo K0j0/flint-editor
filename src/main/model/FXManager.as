@@ -25,7 +25,7 @@ package main.model
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
-	import flash.utils.CompressionAlgorithm;
+//	import flash.utils.CompressionAlgorithm;
 	
 	import main.events.EditorEvent;
 	
@@ -455,6 +455,7 @@ package main.model
 		
 		public function generateImages(bytes:ByteArray) : void
 		{
+			/* 
 			var bitmaps:Array = [];
 			var bitmapNamesGroup:Array = [];
 			var effect:XML = desc.effect;
@@ -492,6 +493,7 @@ package main.model
 			this.bitmapNamesGroup = bitmapNamesGroup;
 			currentBitmapNames = bitmapNames;
 			setEffect("bitmap");
+			 */
 		}
 		
 		public function generateEffect(type:String) : void
