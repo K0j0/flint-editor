@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="750" height="650" backgroundColor="#FFFFFF" borderStyle="outset" borderColor="#030303">
+<mx:Script source="control/ClassTextCanvasControl.as" />
+	<mx:Button x="10" y="10" label="close" click="onClose()"/>
+	<mx:TextArea x="0" y="40" width="100%" height="100%" id="classText" wordWrap="true" editable="false"/>
+	
+</mx:Canvas>

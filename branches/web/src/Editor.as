@@ -16,35 +16,28 @@
  */
 
 
-import flash.events.Event;
-import flash.filesystem.File;
-import flash.filesystem.FileMode;
-import flash.filesystem.FileStream;
-import flash.net.FileFilter;
-import flash.utils.ByteArray;
-
+import main.components.ClassTextCanvas;
 import main.control.FXDescriptor;
 import main.control.FXManager;
 import main.control.MouseControl;
 import main.events.EditorEvent;
 
 import mx.containers.Canvas;
-import mx.controls.Alert;
 import mx.events.MenuEvent;
 
 import org.flintparticles.twoD.renderers.BitmapRenderer;
 
-private var currentFile:File = new File();
+//private var currentFile:File = new File();
 private var fxManager:FXManager;
 private var desc:FXDescriptor = new FXDescriptor();
+private var classText:ClassTextCanvas = new ClassTextCanvas();
 private var renderer:BitmapRenderer;
 private var menuXML:XML = 
 									<application>
 										<File label="File">
-											<menuItem label="trace"/>
 											<menuItem label="Save" enabled="false"/>
-											<menuItem label="Save As"/>
-											<menuItem label="Load"/>
+											<menuItem label="Save As" enabled="false"/>
+											<menuItem label="Load" enabled="false"/>
 											<menuItem label="Generate Class"/>
 										</File>
 										<Effect label="Effect">
@@ -116,15 +109,18 @@ private function onSelectMenu(e:MenuEvent) : void
 
 private function onSave() : void
 {	
+	/* 
 	var bytes:ByteArray = desc.generateBytes();	
 	var stream:FileStream = new FileStream();
 	stream.open(currentFile, FileMode.WRITE);
 	stream.writeBytes(bytes);
 	stream.close();	
+	 */
 }
 
 private function onSaveAs() : void
 {	
+	/* 
 	var bytes:ByteArray = desc.generateBytes();
 	currentFile.browseForSave("Save Effect");
 	currentFile.addEventListener(Event.SELECT, saveData);
@@ -139,10 +135,12 @@ private function onSaveAs() : void
 		stream.close();
 		menuXML.File.menuItem[1].@enabled = true;
 	}
+	 */
 }
 
 private function onLoad() : void
 {
+	/* 
 	var file:File = new File();
 	file.browseForOpen("Open Effect", [new FileFilter("particle effects", "*.particle")]);
 	file.addEventListener(Event.SELECT, loadData);
@@ -175,10 +173,14 @@ private function onLoad() : void
 			return;
 		}
 	}
+	 */
 }
 
 private function onGenerateClass() : void
 {
+	addChild(classText);
+	classText.classText.text = desc.generateClass();
+	/* 
 	var file:File = new File();
 	file.browseForSave("Export .as Class");
 	file.addEventListener(Event.SELECT, onSaveData);
@@ -192,4 +194,5 @@ private function onGenerateClass() : void
 		stream.writeUTFBytes(desc.generateClass());
 		stream.close();
 	}
+	 */
 }

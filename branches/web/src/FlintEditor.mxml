@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="805" height="720" creationPolicy="all" creationComplete="init()" xmlns:ns1="main.components.*" viewSourceURL="srcview/index.html">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="805" height="720" creationPolicy="all" creationComplete="init()" xmlns:ns1="main.components.*" viewSourceURL="srcview/index.html">
 <mx:Script source="Editor.as" />
 	<mx:Canvas x="0" y="4" width="530" height="430" id="gui_mainCanvas" borderStyle="inset" borderColor="#A69E9E">
 	</mx:Canvas>
@@ -47,4 +47,4 @@
 	<ns1:BackgroundCanvas x="392" y="442" id="backgroundCanvas" creationComplete="backgroundCanvas.init(gui_mainCanvas)">
 	</ns1:BackgroundCanvas>
 
-</mx:WindowedApplication>
+</mx:Application>
