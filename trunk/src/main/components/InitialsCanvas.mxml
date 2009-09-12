@@ -15,7 +15,33 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="280">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="350" creationPolicy="all">
+	<mx:states>
+		<mx:State name="pixel">
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{_rotateVelMax}"/>
+			<mx:RemoveChild target="{_scaleMax}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{label3}"/>
+			<mx:RemoveChild target="{_rotateVelCheckBox}"/>
+			<mx:RemoveChild target="{label4}"/>
+			<mx:RemoveChild target="{_scaleMin}"/>
+			<mx:RemoveChild target="{_rotateVelMin}"/>
+			<mx:RemoveChild target="{_rotationCheckBox}"/>
+			<mx:RemoveChild target="{_scaleCheckBoxs}"/>
+			<mx:RemoveChild target="{_rotationMin}"/>
+			<mx:RemoveChild target="{_rotationMax}"/>
+			<mx:RemoveChild target="{label5}"/>
+			<mx:RemoveChild target="{label6}"/>
+			<mx:RemoveChild target="{_massAndCollisionRadiusCheckBox}"/>
+			<mx:RemoveChild target="{_mass}"/>
+			<mx:RemoveChild target="{_collisionRadius}"/>
+			<mx:RemoveChild target="{label7}"/>
+			<mx:RemoveChild target="{label8}"/>
+		</mx:State>
+		<mx:State name="notPixel">
+		</mx:State>
+	</mx:states>
 <mx:Script source="control/InitialsControl.as" />
 	<mx:ColorPicker x="10" y="21" id="_color1" change="onChangeColor()"/>
 	<mx:ColorPicker x="122" y="21" id="_color2" change="onChangeColor()"/>
@@ -24,27 +50,31 @@
 	<mx:NumericStepper x="10" y="67" id="_ageMin" minimum="0" maximum="600" change="onChangeAge()" value="1" stepSize=".1"/>
 	<mx:NumericStepper x="135" y="67" id="_ageMax" minimum="0" maximum="600" change="onChangeAge()" value="2" stepSize=".1"/>
 	<mx:NumericStepper x="10" y="115" id="_alphaMin" minimum="0" maximum="1.00" stepSize=".05" change="onChangeAlpha()" value="1"/>
-	<mx:NumericStepper x="122" y="115" id="_alphaMax" minimum="0" maximum="1" stepSize=".05" change="onChangeAlpha()" value="1"/>
+	<mx:NumericStepper x="135" y="115" id="_alphaMax" minimum="0" maximum="1" stepSize=".05" change="onChangeAlpha()" value="1"/>
 	<mx:NumericStepper x="10" y="162" id="_rotateVelMin" minimum="-500" maximum="500" change="onChangeRotateVelocity()" enabled="false" value="0"/>
-	<mx:NumericStepper x="122" y="162" id="_rotateVelMax" minimum="-500" maximum="500" change="onChangeRotateVelocity()" enabled="false" value="0"/>
-	<mx:NumericStepper x="10" y="204" id="_scaleMin" minimum="-100" maximum="100" change="onChangeScale()" enabled="false" stepSize=".1" value="1"/>
-	<mx:NumericStepper x="10" y="248" id="_rotationMin" minimum="-360" maximum="360" change="onChangeRotation()" enabled="false" stepSize="15"/>
-	<mx:NumericStepper x="122" y="248" id="_rotationMax" minimum="-360" maximum="360" change="onChangeRotation()" enabled="false" stepSize="15"/>
-	<mx:NumericStepper x="122" y="204" id="_scaleMax" minimum="-100" maximum="100" change="onChangeScale()" enabled="false" stepSize=".1" value="1"/>
-	<mx:Label x="10" y="0" text="color" fontWeight="bold"/>
-	<mx:Label x="10" y="97" text="alpha" fontWeight="bold"/>
-	<mx:Label x="10" y="231" text="rotation" fontWeight="bold"/>
-	<mx:Label x="11" y="189" text="scale" fontWeight="bold"/>
+	<mx:NumericStepper x="135" y="162" id="_rotateVelMax" minimum="-500" maximum="500" change="onChangeRotateVelocity()" enabled="false" value="0"/>
+	<mx:NumericStepper x="10" y="210" id="_scaleMin" minimum="-100" maximum="100" change="onChangeScale()" enabled="false" stepSize=".1" value="1"/>
+	<mx:NumericStepper x="10" y="262" id="_rotationMin" minimum="-360" maximum="360" change="onChangeRotation()" enabled="false" stepSize="15"/>
+	<mx:NumericStepper x="135" y="262" id="_rotationMax" minimum="-360" maximum="360" change="onChangeRotation()" enabled="false" stepSize="15"/>
+	<mx:NumericStepper x="135" y="214" id="_scaleMax" minimum="-100" maximum="100" change="onChangeScale()" enabled="false" stepSize=".1" value="1"/>
 	<mx:Label x="94" y="69" text="min"/>
 	<mx:Label x="76" y="115" text="min"/>
-	<mx:Label x="188" y="115" text="max"/>
-	<mx:Label x="88" y="164" text="min"/>
-	<mx:Label x="200" y="164" text="max"/>
-	<mx:Label x="92" y="206" text="min"/>
-	<mx:Label x="200" y="206" text="max"/>
-	<mx:Label x="88" y="252" text="min"/>
-	<mx:Label x="200" y="252" text="max"/>
+	<mx:Label x="194" y="117" text="max"/>
+	<mx:Label x="88" y="164" text="min" id="label4"/>
+	<mx:Label x="213" y="164" text="max" id="label1"/>
+	<mx:Label x="92" y="216" text="min" id="label3"/>
+	<mx:Label x="213" y="222" text="max" id="label2"/>
+	<mx:Label x="88" y="266" text="min" id="label5"/>
+	<mx:Label x="213" y="266" text="max" id="label6"/>
 	<mx:Label x="219" y="69" text="max"/>
-	<mx:CheckBox x="10" y="141" label="rotate velocity" fontWeight="bold" id="_rotateVelCheckBox" click="onSetRotateVelocity()" enabled="false"/>
+	<mx:CheckBox x="10" y="141" label="rotate velocity" fontWeight="bold" id="_rotateVelCheckBox" click="onSetRotateVelocity()"/>
 	<mx:CheckBox x="10" y="47" label="age" fontWeight="bold" id="_ageCheckBox" click="onSetAge()" selected="true"/>
+	<mx:NumericStepper x="10" y="309" minimum="0" maximum="500" enabled="false" id="_mass" change="onChangeMass()"/>
+	<mx:NumericStepper x="135" y="307" minimum="0" maximum="500" enabled="false" id="_collisionRadius" change="onChangeCollisionRadius()"/>
+	<mx:CheckBox x="10" y="189" label="scale" fontWeight="bold" id="_scaleCheckBoxs" click="onSetScale()"/>
+	<mx:CheckBox x="10" y="241" label="rotation" fontWeight="bold" id="_rotationCheckBox" click="onSetRotation()"/>
+	<mx:CheckBox x="10" y="288" label="mass and collision radius" fontWeight="bold" id="_massAndCollisionRadiusCheckBox" click="onSetMassAndCollisionRadius()"/>
+	<mx:CheckBox x="10" y="93" label="alpha" fontWeight="bold" selected="true" id="_alphaCheckBox" click="onSetAlpha()"/>
+	<mx:Label x="79" y="311" text="mass" id="label7"/>
+	<mx:Label x="208" y="309" text="radius" id="label8"/>
 </mx:Canvas>
