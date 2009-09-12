@@ -23,10 +23,10 @@ import flash.filesystem.FileStream;
 import flash.net.FileFilter;
 import flash.utils.ByteArray;
 
-import main.control.FXDescriptor;
-import main.control.FXManager;
-import main.control.MouseControl;
 import main.events.EditorEvent;
+import main.model.FXDescriptor;
+import main.model.FXManager;
+import main.utils.checkgroup.views.MouseControl;
 
 import mx.containers.Canvas;
 import mx.controls.Alert;

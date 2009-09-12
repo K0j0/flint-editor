@@ -17,7 +17,7 @@
 
 import flash.events.MouseEvent;
 
-import main.control.CheckBoxGroup;
+import main.utils.checkgroup.model.CheckBoxGroup;
 
 private var clickFunction:Function;
 private var checkBoxGroup:CheckBoxGroup;

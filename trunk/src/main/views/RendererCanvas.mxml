@@ -44,7 +44,7 @@
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
-	<mx:Script source="control/RendererControl.as" />
+	<mx:Script source="controllers/RendererControl.as" />
 	<mx:RadioButtonGroup id="_rendererType"/>
 	<mx:RadioButton x="10" y="5" label="pixel" groupName="_rendererType" click="onSelectRenderer(&quot;pixel&quot;)" selected="true" enabled="false" id="_radioPixel"/>
 	<mx:RadioButton x="70" y="5" label="bitmap" groupName="_rendererType" click="onSelectRenderer(&quot;bitmap&quot;)" id="_radioBitmap"/>

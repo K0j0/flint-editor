@@ -23,8 +23,8 @@ import flash.events.IOErrorEvent;
 import flash.filesystem.File;
 import flash.net.URLRequest;
 
-import main.control.CheckBoxGroup;
-import main.control.MouseControl;
+import main.utils.checkgroup.model.CheckBoxGroup;
+import main.utils.checkgroup.views.MouseControl;
 
 import mx.containers.Canvas;
 

@@ -15,13 +15,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import main.control.FXManager;
 import main.events.EditorEvent;
+import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
 import mx.events.ListEvent;
 
-private var fxManager:FXManager
+private var fxManager:FXManager;
 private var emittersList:ArrayCollection = new ArrayCollection([]);
 private var emitterNames:ArrayCollection;
 [Bindable]

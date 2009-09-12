@@ -15,12 +15,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package main.control
+package main.utils.checkgroup.model
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
-	import main.components.GroupCheckBox;
+	import main.utils.checkgroup.views.GroupCheckBox;
 	
 	import mx.controls.CheckBox;
 
