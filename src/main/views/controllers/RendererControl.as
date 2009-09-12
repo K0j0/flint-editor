@@ -21,8 +21,8 @@ import flash.events.Event;
 import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
 
-import main.control.FXManager;
 import main.events.EditorEvent;
+import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
 import mx.events.ListEvent;

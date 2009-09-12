@@ -16,6 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <mx:CheckBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()">
-<mx:Script source="../control/GroupCheckBoxControl.as" />
+<mx:Script source="controllers/GroupCheckBoxControl.as" />
 	
 </mx:CheckBox>

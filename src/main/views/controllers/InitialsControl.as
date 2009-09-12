@@ -15,8 +15,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import main.control.FXManager;
 import main.events.EditorEvent;
+import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
 

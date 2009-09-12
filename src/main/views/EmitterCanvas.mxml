@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="160" height="170">
-<mx:Script source="control/EmitterControl.as" />
+<mx:Script source="controllers/EmitterControl.as" />
 	<mx:List x="5.5" y="8" width="149" height="85" id="_emittersList" doubleClickEnabled="true"></mx:List>
 	<mx:Button x="10" y="138" label="add" id="_addBtn" click="onAddEmitter()"/>
 	<mx:Button x="85" y="138" label="remove" id="_removeBtn" enabled="false" click="onRemoveEmitter()"/>
