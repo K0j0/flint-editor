@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) <2009>  <Kojo Kumah>
+ 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+ 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="160" height="200" currentState="Steady">
+	<mx:states>
+		<mx:State name="Blast">
+			<mx:RemoveChild target="{_paramStep3}"/>
+			<mx:RemoveChild target="{_paramStep2}"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="5000"/>
+			<mx:RemoveChild target="{_paramLabel2}"/>
+			<mx:RemoveChild target="{_paramLabel3}"/>
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="start count"/>
+			<mx:SetProperty target="{_paramLabel1}" name="x" value="90"/>
+			<mx:SetProperty target="{_paramLabel1}" name="y" value="82"/>
+		</mx:State>
+		<mx:State name="PerformanceAdjusted">
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="min rate"/>
+			<mx:SetProperty target="{_paramLabel2}" name="text" value="max rate"/>
+			<mx:SetProperty target="{_paramLabel3}" name="text" value="framerate"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramStep2}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep2}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramStep3}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep3}" name="maximum" value="120"/>
+			<mx:SetProperty target="{_paramStep3}" name="value" value="24"/>
+			<mx:SetProperty target="{_paramLabel3}" name="height" value="17"/>
+			<mx:SetProperty target="{_paramLabel3}" name="width" value="65"/>
+			<mx:SetProperty target="{_paramLabel1}" name="x" value="88"/>
+			<mx:SetProperty target="{_paramLabel1}" name="y" value="85"/>
+			<mx:SetProperty target="{_paramLabel2}" name="x" value="88"/>
+			<mx:SetProperty target="{_paramLabel2}" name="y" value="120"/>
+			<mx:SetProperty target="{_paramLabel3}" name="x" value="88"/>
+			<mx:SetProperty target="{_paramLabel3}" name="y" value="155"/>
+		</mx:State>
+		<mx:State name="Pulse">
+			<mx:RemoveChild target="{_paramStep3}"/>
+			<mx:RemoveChild target="{_paramLabel3}"/>
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="period"/>
+			<mx:SetProperty target="{_paramLabel2}" name="text" value="quantity"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value=".1"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="600"/>
+			<mx:SetProperty target="{_paramStep1}" name="stepSize" value="1"/>
+			<mx:SetProperty target="{_paramStep1}" name="value" value="1"/>
+			<mx:SetProperty target="{_paramStep2}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep2}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramLabel1}" name="x" value="100"/>
+			<mx:SetProperty target="{_paramLabel2}" name="x" value="100"/>
+		</mx:State>
+		<mx:State name="Random">
+			<mx:RemoveChild target="{_paramStep3}"/>
+			<mx:RemoveChild target="{_paramLabel3}"/>
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="min rate"/>
+			<mx:SetProperty target="{_paramLabel2}" name="text" value="max rate"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramStep2}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep2}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramLabel1}" name="x" value="98"/>
+			<mx:SetProperty target="{_paramLabel2}" name="x" value="94"/>
+		</mx:State>
+		<mx:State name="SineCounter">
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="period"/>
+			<mx:SetProperty target="{_paramLabel2}" name="text" value="min rate"/>
+			<mx:SetProperty target="{_paramLabel3}" name="text" value="max rate"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value=".1"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="600"/>
+			<mx:SetProperty target="{_paramStep1}" name="stepSize" value="1"/>
+			<mx:SetProperty target="{_paramStep1}" name="value" value="1"/>
+			<mx:SetProperty target="{_paramStep2}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep2}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramStep3}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep3}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramLabel3}" name="x" value="94"/>
+			<mx:SetProperty target="{_paramLabel2}" name="x" value="98"/>
+			<mx:SetProperty target="{_paramLabel1}" name="x" value="110"/>
+		</mx:State>
+		<mx:State name="Steady">
+			<mx:RemoveChild target="{_paramStep2}"/>
+			<mx:RemoveChild target="{_paramStep3}"/>
+			<mx:RemoveChild target="{_paramLabel2}"/>
+			<mx:RemoveChild target="{_paramLabel3}"/>
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="rate"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="5000"/>
+		</mx:State>
+		<mx:State name="TimePeriod">
+			<mx:RemoveChild target="{_paramStep3}"/>
+			<mx:RemoveChild target="{_paramLabel3}"/>
+			<mx:SetProperty target="{_paramLabel1}" name="text" value="quantity"/>
+			<mx:SetProperty target="{_paramLabel2}" name="text" value="duration"/>
+			<mx:SetProperty target="{_paramStep1}" name="minimum" value="0"/>
+			<mx:SetProperty target="{_paramStep1}" name="maximum" value="5000"/>
+			<mx:SetProperty target="{_paramStep2}" name="minimum" value=".1"/>
+			<mx:SetProperty target="{_paramStep2}" name="maximum" value="600"/>
+			<mx:SetProperty target="{_paramStep2}" name="value" value="5"/>
+			<mx:SetProperty target="{_paramLabel1}" name="x" value="100"/>
+			<mx:SetProperty target="{_paramLabel2}" name="x" value="99"/>
+		</mx:State>
+	</mx:states>
+<mx:Script source="control/CounterControl.as" />
+	<mx:ComboBox x="12" y="20" width="138" id="_counterCombo" change="onSelectCounter()"></mx:ComboBox>
+	<mx:NumericStepper x="10" y="80" id="_paramStep1"/>
+	<mx:NumericStepper x="10" y="115" id="_paramStep2"/>
+	<mx:NumericStepper x="10" y="150" id="_paramStep3"/>
+	<mx:Label x="113" y="80" text="Label" id="_paramLabel1"/>
+	<mx:Label x="113" y="115" text="Label" id="_paramLabel2"/>
+	<mx:Label x="113" y="150" text="Label" id="_paramLabel3"/>
+	<mx:Button x="12" y="50" label="set" id="button1" click="onSetCounter()"/>
+	
+</mx:Canvas>

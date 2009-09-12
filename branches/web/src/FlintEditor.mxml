@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) <2009>  <Kojo Kumah>
+ 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+ 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="805" height="720" creationPolicy="all" creationComplete="init()" xmlns:ns1="main.components.*" viewSourceURL="srcview/index.html">
+<mx:Script source="Editor.as" />
+	<mx:Canvas x="0" y="4" width="530" height="430" id="gui_mainCanvas" borderStyle="inset" borderColor="#A69E9E">
+	</mx:Canvas>
+	<mx:TabNavigator x="529" y="7" width="269" height="666">
+		<mx:Canvas label="Initials" width="100%" height="100%">
+			<ns1:ZoneCanvas x="4" y="379" id="zoneCanvas" creationComplete="zoneCanvas.init()">
+			</ns1:ZoneCanvas>
+			<ns1:InitialsCanvas x="3.5" y="0" id="initialsCanvas" creationComplete="initialsCanvas.init()">
+			</ns1:InitialsCanvas>
+		</mx:Canvas>
+		<mx:Canvas label="Actions" width="100%" height="100%">
+			<ns1:ActionsCanvas x="3" y="10" id="actionsCanvas" creationComplete="actionsCanvas.inits()">
+			</ns1:ActionsCanvas>
+		</mx:Canvas>
+		<mx:Canvas label="Filters" width="100%" height="100%">
+			<ns1:FilterCanvas x="3" y="2" id="filterCanvas" creationComplete="filterCanvas.init()">
+			</ns1:FilterCanvas>
+		</mx:Canvas>
+	</mx:TabNavigator>
+	<ns1:RendererCanvas x="0" y="442" id="rendererCanvas" creationPolicy="all" creationComplete="rendererCanvas.init()">
+	</ns1:RendererCanvas>
+	<mx:ApplicationControlBar x="195" y="0" id="gui_appControlBar" dock="true" height="25" paddingBottom="0" paddingTop="0">
+		<mx:MenuBar id="gui_appMenuBar" labelField="@label"/>
+	</mx:ApplicationControlBar>
+	<mx:TabNavigator x="232" y="442" width="160" height="231" creationPolicy="all">
+		<ns1:CounterCanvas label="Counter" width="100%" height="100%"  id="counterCanvas" creationComplete="counterCanvas.init()"/>
+		<ns1:EmitterCanvas label="Emitters" width="100%" height="100%"  id="emitterCanvas" creationComplete="emitterCanvas.init()"/>
+	</mx:TabNavigator>
+	<ns1:BackgroundCanvas x="392" y="442" id="backgroundCanvas" creationComplete="backgroundCanvas.init(gui_mainCanvas)">
+	</ns1:BackgroundCanvas>
+
+</mx:WindowedApplication>
