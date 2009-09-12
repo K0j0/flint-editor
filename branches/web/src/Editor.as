@@ -16,11 +16,11 @@
  */
 
 
-import main.components.ClassTextCanvas;
 import main.events.EditorEvent;
 import main.model.FXDescriptor;
 import main.model.FXManager;
 import main.utils.checkgroup.views.MouseControl;
+import main.views.ClassTextCanvas;
 
 import mx.containers.Canvas;
 import mx.events.MenuEvent;

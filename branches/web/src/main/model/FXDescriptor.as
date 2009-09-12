@@ -20,7 +20,7 @@ package main.model
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
-	import flash.utils.CompressionAlgorithm;
+//	import flash.utils.CompressionAlgorithm;
 	
 	import org.spicefactory.lib.reflect.ClassInfo;
 	
@@ -151,7 +151,7 @@ package main.model
 		{
 			var rect:Rectangle = new Rectangle(0, 0, bitmap.width, bitmap.height);
 			var imageBytes:ByteArray = bitmap.bitmapData.getPixels(rect);
-			imageBytes.compress(CompressionAlgorithm.DEFLATE);
+//			imageBytes.compress(CompressionAlgorithm.DEFLATE);
 			var image:XML = <image />;
 			image.@length = imageBytes.length;
 			image.@width = bitmap.width;
@@ -206,7 +206,7 @@ package main.model
 		{
 			delete currentEffect.filters.*[index];
 		}
-		
+		/* 
 		public function generateBytes() : ByteArray
 		{
 			var savedEffect:XML = currentEffect.copy();
@@ -237,7 +237,7 @@ package main.model
 			}
 			return bytes;
 		}
-		
+		 */
 		public function effectLoaded(type:String, effect:XML) : void
 		{
 			if(type == "pixel"){

@@ -24,7 +24,7 @@
 				<mx:List x="10" y="30" height="84" width="133" id="_imagesList" doubleClickEnabled="true"></mx:List>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:Button x="152" y="32" label="add" id="_addImage" click="onAddImage()"/>
+				<mx:Button x="152" y="32" label="add" id="_addImage" click="onAddImage()" enabled="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild" creationPolicy="all">
 				<mx:Button x="151" y="62" label="remove" id="_removeImage" enabled="false" click="onRemoveImage()"/>
