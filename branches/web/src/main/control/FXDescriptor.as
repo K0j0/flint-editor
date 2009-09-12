@@ -366,11 +366,11 @@ package main.control
 					particleClass += emitterName + ".addInitializer(" + s + ");\n";
 				}
 				//	get images
+				var embedString:String = "";	//	declared here to prevent null reference when referenced in particle class
 				if(currentEffect == bitmapEffect){
 					imports.push("flash.display.Bitmap;");
 					imports.push("org.flintparticles.common.initializers.SharedImages;");
 					var sharedImages:XML = emitter.initializers.SharedImages[0];
-					var embedString:String = "";
 					var sharedImagesParams:String = "";
 					len = sharedImages.children().length();
 					for(j = 0; j < len; j++){
