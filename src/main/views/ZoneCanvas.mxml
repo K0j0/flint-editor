@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="250" currentState="Disc" xmlns:ns1="main.components.*">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="250" currentState="Disc" xmlns:ns1="main.components.*" xmlns:view="main.utils.checkgroup.view.*" xmlns:views="main.utils.checkgroup.views.*">
 	<mx:states>
 		<mx:State name="Point">
 			<mx:AddChild position="lastChild">
@@ -34,7 +34,7 @@
 				<mx:Label x="10" y="73" text="Point" id="label3" fontWeight="bold"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<ns1:GroupCheckBox x="88" y="71" id="_groupCheckPoint1" label="use mouse"/>
+				<views:GroupCheckBox x="88" y="71" id="_groupCheckPoint1" label="use mouse"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="Disc" basedOn="Point">
@@ -87,7 +87,7 @@
 				<mx:Label x="10" y="173" text="Point 2" fontWeight="bold"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild" creationPolicy="all">
-				<ns1:GroupCheckBox x="88" y="173" id="_groupCheckPoint2" label="use mouse"/>
+				<views:GroupCheckBox x="88" y="173" id="_groupCheckPoint2" label="use mouse"/>
 			</mx:AddChild>
 		</mx:State>
 		<mx:State name="Rectangle">
@@ -117,7 +117,7 @@
 			</mx:AddChild>
 		</mx:State>
 	</mx:states>
-<mx:Script source="control/ZoneCanvasControl.as" />
+<mx:Script source="controllers/ZoneCanvasControl.as" />
 	<mx:RadioButtonGroup id="_radioZone"/>
 	<mx:RadioButton x="181" y="10" groupName="_radioZone" id="_posZone" selected="true" enabled="false" click="onSelectZoneType()" label="Position"/>
 	<mx:RadioButton x="181" y="36" groupName="_radioZone" id="_velZone" click="onSelectZoneType()" label="Velocity"/>

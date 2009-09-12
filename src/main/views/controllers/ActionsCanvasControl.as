@@ -15,10 +15,11 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import main.control.CheckBoxGroup;
-import main.control.FXManager;
-import main.control.MouseControl;
+
 import main.events.EditorEvent;
+import main.model.FXManager;
+import main.utils.checkgroup.model.CheckBoxGroup;
+import main.utils.checkgroup.views.MouseControl;
 
 import mx.collections.ArrayCollection;
 

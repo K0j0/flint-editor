@@ -15,7 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<mx:CheckBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()">
-<mx:Script source="../control/GroupCheckBoxControl.as" />
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="160" height="170">
+<mx:Script source="controllers/EmitterControl.as" />
+	<mx:List x="5.5" y="8" width="149" height="85" id="_emittersList" doubleClickEnabled="true"></mx:List>
+	<mx:Button x="10" y="138" label="add" id="_addBtn" click="onAddEmitter()"/>
+	<mx:Button x="85" y="138" label="remove" id="_removeBtn" enabled="false" click="onRemoveEmitter()"/>
+	<mx:Label x="10" y="101" text="currently selected" fontWeight="bold"/>
+	<mx:Label x="10" y="115" text="{selectedEmitter}" id="_selectedEmitter"/>
 	
-</mx:CheckBox>
+</mx:Canvas>

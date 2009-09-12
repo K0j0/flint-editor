@@ -15,13 +15,14 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package main.control
+package main.utils.checkgroup.views
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.events.MouseEvent;
 	
 	import main.events.EditorEvent;
+	import main.utils.checkgroup.model.CheckBoxGroup;
 	
 	import mx.containers.Canvas;
 

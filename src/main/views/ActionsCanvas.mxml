@@ -15,8 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="400" currentState="Accelerate" xmlns:ns1="main.components.*">
-<mx:Script source="control/ActionsCanvasControl.as" />
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="260" height="400" currentState="Accelerate" xmlns:ns1="main.components.*" xmlns:views="main.utils.checkgroup.views.*">
+<mx:Script source="controllers/ActionsCanvasControl.as" />
 	<mx:states>
 		<mx:State name="AntiGravity">
 			<mx:RemoveChild target="{label3}"/>
@@ -363,6 +363,6 @@
 	<mx:Label x="135" y="273" text="Label" id="label2"/>
 	<mx:Label x="135" y="303" text="Label" id="label3"/>
 	<mx:Label x="135" y="333" text="Label" id="label4"/>
-	<ns1:GroupCheckBox x="171" y="71" label="use mouse" id="_mouseGroupCheck"/>
+	<views:GroupCheckBox x="171" y="71" label="use mouse" id="_mouseGroupCheck"/>
 	
 </mx:Canvas>
