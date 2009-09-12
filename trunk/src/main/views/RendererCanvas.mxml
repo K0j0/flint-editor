@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) <2009>  <Kojo Kumah>
+ 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+ 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+ 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="232" height="230" currentState="pixel" backgroundColor="#FFFFFF">
+	<mx:states>
+		<mx:State name="pixel">
+		</mx:State>
+		<mx:State name="bitmap">
+			<mx:AddChild position="lastChild" creationPolicy="all">
+				<mx:List x="10" y="30" height="84" width="133" id="_imagesList" doubleClickEnabled="true"></mx:List>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Button x="152" y="32" label="add" id="_addImage" click="onAddImage()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild" creationPolicy="all">
+				<mx:Button x="151" y="62" label="remove" id="_removeImage" enabled="false" click="onRemoveImage()"/>
+			</mx:AddChild>
+			<mx:AddChild  creationPolicy="all" position="lastChild">
+				<mx:ComboBox x="10" y="198" id="_imageBlendMode" change="onChooseImageBlendMode()"></mx:ComboBox>
+			</mx:AddChild>
+			<mx:SetProperty target="{label1}" name="text" value="Blend Modes"/>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="178" y="202" text="bitmap"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="10" y="121" text="selected image:"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="108" y="121" text="{selectedImageName}" id="_selectedImage"/>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:Script source="control/RendererControl.as" />
+	<mx:RadioButtonGroup id="_rendererType"/>
+	<mx:RadioButton x="10" y="5" label="pixel" groupName="_rendererType" click="onSelectRenderer(&quot;pixel&quot;)" selected="true" enabled="false" id="_radioPixel"/>
+	<mx:RadioButton x="70" y="5" label="bitmap" groupName="_rendererType" click="onSelectRenderer(&quot;bitmap&quot;)" id="_radioBitmap"/>
+	<mx:Label x="10" y="147" text="Blend Mode" id="label1"/>
+	<mx:ComboBox x="10" y="168" id="_rendererBlendCombo" change="onChooseBlendMode()"></mx:ComboBox>
+	<mx:Label x="178" y="170" text="renderer"/>
+	
+</mx:Canvas>
