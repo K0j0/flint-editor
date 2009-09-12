@@ -17,8 +17,8 @@
 
 import flash.filters.BitmapFilter;
 
-import main.control.FXManager;
 import main.events.EditorEvent;
+import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
 import mx.controls.Alert;

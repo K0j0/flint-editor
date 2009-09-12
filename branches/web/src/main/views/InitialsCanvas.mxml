@@ -42,7 +42,7 @@
 		<mx:State name="notPixel">
 		</mx:State>
 	</mx:states>
-<mx:Script source="control/InitialsControl.as" />
+<mx:Script source="controllers/InitialsControl.as" />
 	<mx:ColorPicker x="10" y="21" id="_color1" change="onChangeColor()"/>
 	<mx:ColorPicker x="122" y="21" id="_color2" change="onChangeColor()"/>
 	<mx:Label x="40" y="21" text="color 1"/>

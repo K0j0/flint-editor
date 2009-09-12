@@ -15,12 +15,12 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package main.control
+package main.model
 {
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
-//	import flash.utils.CompressionAlgorithm;
+	import flash.utils.CompressionAlgorithm;
 	
 	import org.spicefactory.lib.reflect.ClassInfo;
 	
@@ -149,7 +149,6 @@ package main.control
 		
 		public function addImage(bitmap:Bitmap, path:String) : void
 		{
-			/* 
 			var rect:Rectangle = new Rectangle(0, 0, bitmap.width, bitmap.height);
 			var imageBytes:ByteArray = bitmap.bitmapData.getPixels(rect);
 			imageBytes.compress(CompressionAlgorithm.DEFLATE);
@@ -162,7 +161,6 @@ package main.control
 			image.@path = path;
 			currentEffect.emitter[eIndex].initializers.SharedImages.appendChild(image);
 			imageBytes = null;
-			 */
 		}
 		
 		public function removeImage(index:int) : void
@@ -209,7 +207,6 @@ package main.control
 			delete currentEffect.filters.*[index];
 		}
 		
-			/* 
 		public function generateBytes() : ByteArray
 		{
 			var savedEffect:XML = currentEffect.copy();
@@ -240,7 +237,6 @@ package main.control
 			}
 			return bytes;
 		}
-			 */
 		
 		public function effectLoaded(type:String, effect:XML) : void
 		{

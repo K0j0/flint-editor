@@ -17,9 +17,9 @@
 
 import flash.geom.Point;
 
-import main.control.FXManager;
-import main.control.MouseControl;
 import main.events.EditorEvent;
+import main.model.FXManager;
+import main.utils.checkgroup.views.MouseControl;
 
 import org.flintparticles.common.initializers.Initializer;
 import org.flintparticles.twoD.initializers.Position;

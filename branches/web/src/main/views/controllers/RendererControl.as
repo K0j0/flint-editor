@@ -21,17 +21,13 @@ import flash.events.Event;
 import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
 
-import main.control.FXManager;
 import main.events.EditorEvent;
+import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
 import mx.events.ListEvent;
 
 import org.flintparticles.twoD.renderers.BitmapRenderer;
-
-[Embed (source="../assets/Moon-icon.png")]
-private var imgClass:Class;
-private var img:Bitmap = new imgClass();
 
 private var fxManager:FXManager;
 private var renderer:BitmapRenderer;
@@ -94,13 +90,13 @@ private function onUpdateReferences(e:EditorEvent = null) : void
 private function onSelectRenderer(type:String) : void
 {
 	if(type == "bitmap"){
-		if(bitmapNames.length == 0){
-			fxManager.addImage(img, "../assets/Moon-icon.png");
-		}
 		_radioBitmap.enabled = false;
 		_radioPixel.enabled = true;
 		currentState = "bitmap";
-		fxManager.setEffect("bitmap");		
+		if(bitmapNames.length == 0) onAddImage();
+		else{
+			fxManager.setEffect("bitmap");
+		}
 	}
 	else if(type == "pixel") {
 		_radioBitmap.enabled = true;
@@ -159,12 +155,10 @@ private function onChooseImageBlendMode() : void
 
 private function onAddImage() : void
 {
-	/* 
 	var file:File = new File();
 	file.browseForOpen("Choose Image");
 	file.addEventListener(Event.SELECT, onSelectFile);
 	file.addEventListener(Event.CANCEL, onCancel);
-	 */
 }
 
 private function onSelectFile(e:Event) : void
