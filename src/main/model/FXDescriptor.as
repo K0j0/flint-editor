@@ -27,13 +27,17 @@ package main.model
 	public class FXDescriptor
 	{
 		private var fxManager:FXManager;
-		private var pixelEffect:XML = 
-									<effect type="pixel">
+		private var bitmapEffect:XML = 
+									<effect type="bitmap">
 										<filters />
 										<blendMode>normal</blendMode>
 									</effect>;
-		private var bitmapEffect:XML = 
-									<effect type="bitmap">
+		private var displayObjectEffect:XML = 
+									<effect type="displayObject">
+										<filters />
+									</effect>;
+		private var pixelEffect:XML = 
+									<effect type="pixel">
 										<filters />
 										<blendMode>normal</blendMode>
 									</effect>;
@@ -68,15 +72,7 @@ package main.model
 		public function addEmitter() : void
 		{
 			var emitterNode:XML;
-			if(currentEffect.@type == "pixel"){
-				emitterNode =
-								<emitter name="emitter">
-									<counter />
-									<initializers />
-									<actions />									
-								</emitter>;				
-			}
-			else if(currentEffect.@type == "bitmap"){
+			if(currentEffect.@type == "bitmap"){
 				emitterNode =
 								<emitter name="emitter">
 									<counter />
@@ -90,6 +86,24 @@ package main.model
 					var sharedImages:XML = currentEffect.emitter[emitterCount-1].initializers.SharedImages[0];
 					emitterNode.initializers.SharedImages = sharedImages;
 				}		
+			}
+			else if(currentEffect.@type == "displayObject"){
+				emitterNode =
+								<emitter name="emitter">
+									<counter />
+									<initializers />
+									<actions />									
+								</emitter>;
+				//	!!!	use display objects from other imageClasses?
+				
+			}
+			else if(currentEffect.@type == "pixel"){
+				emitterNode =
+								<emitter name="emitter">
+									<counter />
+									<initializers />
+									<actions />									
+								</emitter>;				
 			}
 			
 			currentEffect.appendChild(emitterNode);
@@ -108,8 +122,9 @@ package main.model
 		
 		public function setEffect(type:String) : void
 		{
-			if(type == "pixel") currentEffect = pixelEffect;
-			else if(type == "bitmap") currentEffect = bitmapEffect;
+			if(type == "bitmap") currentEffect = bitmapEffect;
+			else if(type == "displayObject") currentEffect = displayObjectEffect;
+			else if(type == "pixel") currentEffect = pixelEffect;
 			eIndex = 0;
 		}
 		

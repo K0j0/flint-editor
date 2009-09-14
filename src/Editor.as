@@ -16,6 +16,7 @@
  */
 
 
+import flash.display.DisplayObject;
 import flash.events.Event;
 import flash.filesystem.File;
 import flash.filesystem.FileMode;
@@ -32,12 +33,12 @@ import mx.containers.Canvas;
 import mx.controls.Alert;
 import mx.events.MenuEvent;
 
-import org.flintparticles.twoD.renderers.BitmapRenderer;
+import org.flintparticles.common.renderers.Renderer;
 
 private var currentFile:File = new File();
 private var fxManager:FXManager;
 private var desc:FXDescriptor = new FXDescriptor();
-private var renderer:BitmapRenderer;
+private var renderer:Renderer;
 private var menuXML:XML = 
 									<application>
 										<File label="File">
@@ -76,7 +77,7 @@ private function onReady(e:EditorEvent) : void
 private function onUpdateReferences(e:EditorEvent = null) : void
 {
 	renderer = fxManager.getRenderer();
-	gui_mainCanvas.rawChildren.addChild(renderer);
+	gui_mainCanvas.rawChildren.addChild(renderer as DisplayObject);
 }
 
 public function get canvas () : Canvas

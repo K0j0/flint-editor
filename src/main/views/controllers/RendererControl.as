@@ -27,10 +27,12 @@ import main.model.FXManager;
 import mx.collections.ArrayCollection;
 import mx.events.ListEvent;
 
+import org.flintparticles.common.renderers.Renderer;
 import org.flintparticles.twoD.renderers.BitmapRenderer;
+import org.flintparticles.twoD.renderers.DisplayObjectRenderer;
 
 private var fxManager:FXManager;
-private var renderer:BitmapRenderer;
+private var renderer:Renderer;
 private var selectedImage:Object = {bitmap:null, index:0};
 private var bitmaps:Array;
 private var bitmapNames:ArrayCollection;
@@ -42,12 +44,12 @@ private var blendModesArray:Array = [];
 public function init() : void
 {
 	fxManager = FXManager.getInstance();
-	
+	_displayObjectComboBox.dataProvider = ["Dot", "Line", "RadialDot", "Rect", "Star"];
 	_imagesList.dataProvider = bitmapNames;
 	_rendererBlendCombo.dataProvider = ["add", "alpha", "darken", "difference", 
 		"erase", "hardlight", "invert", "layer", "lighten", "multiply", "normal", 
 		"overlay", "screen", "subtract"];
-	_imageBlendMode.dataProvider = ["add", "alpha", "darken", "difference", 
+	_imageBlendMode.dataProvider = _displayObjectBlendMode.dataProvider = ["add", "alpha", "darken", "difference", 
 		"erase", "hardlight", "invert", "layer", "lighten", "multiply", "normal", 
 		"overlay", "screen", "subtract"];
 	_rendererBlendCombo.selectedIndex = _imageBlendMode.selectedIndex = 10;
@@ -90,6 +92,7 @@ private function onUpdateReferences(e:EditorEvent = null) : void
 private function onSelectRenderer(type:String) : void
 {
 	if(type == "bitmap"){
+		_radioDisplayObject.enabled = true;
 		_radioBitmap.enabled = false;
 		_radioPixel.enabled = true;
 		currentState = "bitmap";
@@ -98,12 +101,33 @@ private function onSelectRenderer(type:String) : void
 			fxManager.setEffect("bitmap");
 		}
 	}
+	else if(type == "displayObject"){
+		currentState = _displayObjectComboBox.selectedItem as String;
+		_radioDisplayObject.enabled = false;
+		_radioPixel.enabled = true;
+		_radioBitmap.enabled = true;
+		fxManager.setEffect("displayObject");
+	}
 	else if(type == "pixel") {
+		_radioDisplayObject.enabled = true;
 		_radioBitmap.enabled = true;
 		_radioPixel.enabled = false;
 		currentState = "pixel";
 		fxManager.setEffect("pixel");
 	}
+}
+
+private function onSelectDisplayObject() : void
+{
+	var displayObject:String = _displayObjectComboBox.selectedItem as String;
+	currentState = displayObject;
+}
+
+private function onUpdateDisplayObject() : void
+{
+	var params:Array = [currentState, _displayObjectProp1.value, _displayObjectColor.selectedColor, _displayObjectBlendMode.selectedItem];
+	if(currentState == "Rect") params.splice(1, 0, _displayObjectProp2.value);
+	fxManager.changeDisplayObject(params);
 }
 
 private function onRemoveImage() : void
@@ -141,16 +165,19 @@ private function onSelectImage(e:ListEvent) : void
 private function onChooseBlendMode() : void
 {
 	var blendMode:String = _rendererBlendCombo.selectedItem.toString();
-	renderer.blendMode = blendMode;
+	BitmapRenderer(renderer).blendMode = blendMode;
 	fxManager.setRendererBlendMode(blendMode);
 	trace("Blend Mode chosen... " + blendMode);
 }
 
 private function onChooseImageBlendMode() : void
 {
-	var blendMode:String = _imageBlendMode.selectedItem.toString();
-	if(selectedImage.bitmap) fxManager.changeImageBlendMode(selectedImage.index, blendMode);
-	trace("Image " + selectedImage.index + " blendmode is " + blendMode);
+	if(renderer is DisplayObjectRenderer) onUpdateDisplayObject();
+	else{
+		var blendMode:String = _imageBlendMode.selectedItem.toString();
+		if(selectedImage.bitmap) fxManager.changeImageBlendMode(selectedImage.index, blendMode);
+		trace("Image " + selectedImage.index + " blendmode is " + blendMode);
+	}
 }
 
 private function onAddImage() : void

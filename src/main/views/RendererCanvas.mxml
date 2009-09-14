@@ -43,13 +43,67 @@
 				<mx:Label x="108" y="121" text="{selectedImageName}" id="_selectedImage"/>
 			</mx:AddChild>
 		</mx:State>
+		<mx:State name="displayObject">
+			<mx:AddChild position="lastChild" creationPolicy="all">
+				<mx:ComboBox x="10" y="35" id="_displayObjectComboBox" change="onSelectDisplayObject()"></mx:ComboBox>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="178" y="37" text="type"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="65" id="_displayObjectProp1" value="1" minimum="0" maximum="50" stepSize=".5" change="onUpdateDisplayObject()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="76" y="67" text="radius" id="label3"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:ColorPicker x="119" y="65" id="_displayObjectColor" selectedColor="#FFFFFF" change="onUpdateDisplayObject()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="149" y="67" text="color"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:NumericStepper x="10" y="95" id="_displayObjectProp2" value="1" minimum="0" maximum="50" stepSize=".5" change="onUpdateDisplayObject()"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:Label x="76" y="97" text="Label" id="label2"/>
+			</mx:AddChild><mx:AddChild position="lastChild">
+				<mx:Label x="178" y="202" text="image"/>
+			</mx:AddChild>
+			<mx:SetProperty target="{_rendererBlendCombo}" name="enabled" value="false"/>
+			<mx:AddChild position="lastChild" creationPolicy="all">
+				<mx:ComboBox x="10" y="198" id="_displayObjectBlendMode" change="onUpdateDisplayObject()" selectedIndex="10"></mx:ComboBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="Dot" basedOn="displayObject">
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{_displayObjectProp2}"/>
+		</mx:State>
+		<mx:State name="Line" basedOn="displayObject">
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{_displayObjectProp2}"/>
+			<mx:SetProperty target="{label3}" name="text" value="length"/>
+		</mx:State>
+		<mx:State name="RadialDot" basedOn="displayObject">
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{_displayObjectProp2}"/>
+		</mx:State>
+		<mx:State name="Star" basedOn="displayObject">
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{_displayObjectProp2}"/>
+		</mx:State>
+		<mx:State name="Rect" basedOn="displayObject">
+			<mx:SetProperty target="{label3}" name="text" value="height"/>
+			<mx:SetProperty target="{label2}" name="text" value="width"/>
+		</mx:State>
 	</mx:states>
 	<mx:Script source="controllers/RendererControl.as" />
 	<mx:RadioButtonGroup id="_rendererType"/>
-	<mx:RadioButton x="10" y="5" label="pixel" groupName="_rendererType" click="onSelectRenderer(&quot;pixel&quot;)" selected="true" enabled="false" id="_radioPixel"/>
-	<mx:RadioButton x="70" y="5" label="bitmap" groupName="_rendererType" click="onSelectRenderer(&quot;bitmap&quot;)" id="_radioBitmap"/>
+	<mx:RadioButton x="6" y="5" label="pixel" groupName="_rendererType" click="onSelectRenderer(&quot;pixel&quot;)" selected="true" enabled="false" id="_radioPixel"/>
+	<mx:RadioButton x="62" y="5" label="bitmap" groupName="_rendererType" click="onSelectRenderer(&quot;bitmap&quot;)" id="_radioBitmap"/>
 	<mx:Label x="10" y="147" text="Blend Mode" id="label1"/>
 	<mx:ComboBox x="10" y="168" id="_rendererBlendCombo" change="onChooseBlendMode()"></mx:ComboBox>
 	<mx:Label x="178" y="170" text="renderer"/>
+	<mx:RadioButton x="127" y="5" label="display object" groupName="_rendererType" id="_radioDisplayObject" click="onSelectRenderer(&quot;displayObject&quot;)"/>
 	
 </mx:Canvas>
