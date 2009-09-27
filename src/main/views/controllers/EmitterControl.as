@@ -30,7 +30,7 @@ private var index:int;
 
 public function init() : void
 {
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
 	
 	_emittersList.addEventListener(ListEvent.CHANGE, onSelectEmitter);
 	_emittersList.addEventListener(ListEvent.ITEM_DOUBLE_CLICK, onDoubleClickEmitter);

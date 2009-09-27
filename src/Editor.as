@@ -25,13 +25,14 @@ import main.views.ClassTextCanvas;
 import mx.containers.Canvas;
 import mx.events.MenuEvent;
 
-import org.flintparticles.twoD.renderers.BitmapRenderer;
+import org.flintparticles.common.renderers.Renderer;
+import org.flintparticles.twoD.renderers.DisplayObjectRenderer;
 
 //private var currentFile:File = new File();
 private var fxManager:FXManager;
-private var desc:FXDescriptor = new FXDescriptor();
+private var desc:FXDescriptor;
+private var renderer:Renderer;
 private var classText:ClassTextCanvas = new ClassTextCanvas();
-private var renderer:BitmapRenderer;
 private var menuXML:XML = 
 									<application>
 										<File label="File">
@@ -49,13 +50,17 @@ private var menuXML:XML =
 private function init() : void
 {
 	trace("Lez go");
-	gui_appMenuBar.showRoot = false;
-	gui_appMenuBar.dataProvider = menuXML;
-	gui_appMenuBar.addEventListener(MenuEvent.ITEM_CLICK, onSelectMenu);
+	_mainCanvas.scrollRect = new Rectangle(0,0, _mainCanvas.width, _mainCanvas.height);
+
+	_appMenuBar.showRoot = false;
+	_appMenuBar.dataProvider = menuXML;
+	_appMenuBar.addEventListener(MenuEvent.ITEM_CLICK, onSelectMenu);
 
 	var mouseControl:MouseControl = MouseControl.getInstance();
-	mouseControl.canvas = gui_mainCanvas;
-	fxManager = FXManager.getInstance();
+	mouseControl.canvas = _mainCanvas;
+	desc = FXDescriptor._instance
+	fxManager = FXManager._instance;
+	fxManager.addEventListener(EditorEvent.RENDERER_SWITCH, onRendererSwitch);
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
 	fxManager.initialize(this, desc);	
 }
@@ -69,12 +74,22 @@ private function onReady(e:EditorEvent) : void
 private function onUpdateReferences(e:EditorEvent = null) : void
 {
 	renderer = fxManager.getRenderer();
-	gui_mainCanvas.rawChildren.addChild(renderer);
+	_mainCanvas.rawChildren.addChild(renderer as DisplayObject);
+}
+
+private function onRendererSwitch(e:EditorEvent) : void
+{
+	if(renderer is DisplayObjectRenderer){
+		if(acfTab.contains(Filters)) acfTab.removeChild(Filters);
+	}
+	else{
+		acfTab.addChild(Filters);
+	}
 }
 
 public function get canvas () : Canvas
 {
-	return gui_mainCanvas;
+	return _mainCanvas;
 }
 
 private function onSelectMenu(e:MenuEvent) : void
@@ -155,6 +170,12 @@ private function onLoad() : void
 			var effect:XML = XML(stream.readUTFBytes(stream.bytesAvailable));
 			desc.effectLoaded("pixel", effect);
 			fxManager.generateEffect("pixel");
+			trace(effect);
+		}
+		else if(type == "d"){
+			effect = XML(stream.readUTFBytes(stream.bytesAvailable));
+			desc.effectLoaded("displayObject", effect);
+			fxManager.generateEffect("displayObject");
 			trace(effect);
 		}
 		else if(type == "b"){	

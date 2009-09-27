@@ -35,7 +35,7 @@ private var mouseControl:MouseControl;
 
 public function init() : void
 {
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
 	mouseControl = MouseControl.getInstance();
 	_zoneCombo.dataProvider = ["DiscZone", "PointZone", "LineZone", "RectangleZone"];
 	
