@@ -364,7 +364,10 @@ package main.model
 					function func(node:XML) : void {
 						name = node.name();
 						if(/param/i.test(name)){
-							params += node.toString();
+							var val:String = node.toString();
+							if(/dot|line|star|rect/i.test(val)) imports.push("org.flintparticles.common.displayObjects." + val);
+							else if(!(/\d+/.test(val))) val = "\"" + val + "\"";
+							params += val;
 						}
 						else{
 							if(/point/i.test(name)){
@@ -420,6 +423,10 @@ package main.model
 			if(currentEffect == pixelEffect){
 				var rendererString:String = "var renderer:PixelRenderer = new PixelRenderer(new Rectangle(0, 0, 530, 430));\n";
 				imports.push("org.flintparticles.twoD.renderers.PixelRenderer;");
+			}
+			else if(currentEffect == displayObjectEffect){
+				rendererString = "var renderer:DisplayObjectRenderer = new DisplayObjectRenderer();\n";
+				imports.push("org.flintparticles.twoD.renderers.DisplayObjectRenderer;");
 			}
 			else if(currentEffect == bitmapEffect){
 				rendererString = "var renderer:BitmapRenderer = new BitmapRenderer(new Rectangle(0, 0, 530, 430));\n";
