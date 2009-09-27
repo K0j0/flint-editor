@@ -35,20 +35,25 @@ package main.model
 	import org.flintparticles.common.actions.Age;
 	import org.flintparticles.common.counters.Counter;
 	import org.flintparticles.common.counters.Pulse;
+	import org.flintparticles.common.counters.SineCounter;
 	import org.flintparticles.common.counters.Steady;
+	import org.flintparticles.common.displayObjects.Dot;
 	import org.flintparticles.common.emitters.Emitter;
 	import org.flintparticles.common.initializers.AlphaInit;
 	import org.flintparticles.common.initializers.ColorInit;
+	import org.flintparticles.common.initializers.ImageClass;
 	import org.flintparticles.common.initializers.Initializer;
 	import org.flintparticles.common.initializers.Lifetime;
 	import org.flintparticles.common.initializers.ScaleImageInit;
 	import org.flintparticles.common.initializers.SharedImages;
+	import org.flintparticles.common.renderers.Renderer;
 	import org.flintparticles.twoD.actions.Move;
 	import org.flintparticles.twoD.emitters.Emitter2D;
 	import org.flintparticles.twoD.initializers.Position;
 	import org.flintparticles.twoD.initializers.RotateVelocity;
 	import org.flintparticles.twoD.initializers.Rotation;
 	import org.flintparticles.twoD.renderers.BitmapRenderer;
+	import org.flintparticles.twoD.renderers.DisplayObjectRenderer;
 	import org.flintparticles.twoD.renderers.PixelRenderer;
 	import org.flintparticles.twoD.zones.DiscSectorZone;
 	import org.spicefactory.lib.reflect.ClassInfo;
@@ -63,24 +68,31 @@ package main.model
 		private var currentEmitter:Emitter2D;
 		private var currentEmitters:Array = [];
 		private var currentEmitterNames:ArrayCollection = new ArrayCollection([]);
-		private var pixelEmitterNames:ArrayCollection = new ArrayCollection([]);
 		private var bitmapEmitterNames:ArrayCollection = new ArrayCollection([]);
-		private var pixelEmitters:Array = [];
+		private var displayObjectEmitterNames:ArrayCollection = new ArrayCollection([]);
+		private var pixelEmitterNames:ArrayCollection = new ArrayCollection([]);
 		private var bitmapEmitters:Array = [];
+		private var displayObjectEmitters:Array = [];
+		private var pixelEmitters:Array = [];
 		private var bitmapActionsGroup:Array = [];
+		private var displayObjectActionsGroup:Array = [];
 		private var pixelActionsGroup:Array = [];
 		private var currentActions:ArrayCollection;
-		private var pixelFilters:ArrayCollection = new ArrayCollection([]);
 		private var bitmapFilters:ArrayCollection = new ArrayCollection([]);
+//		private var displayObjectFilters:ArrayCollection = new ArrayCollection([]);
+		private var pixelFilters:ArrayCollection = new ArrayCollection([]);
 		private var currentFilters:ArrayCollection = new ArrayCollection([]);
 		private var bitmapInitializersGroup:Array = [];
+		private var displayObjectInitializersGroup:Array = [];
 		private var pixelInitializersGroup:Array = [];
 		private var currentInitializers:Array = [];
 		private var currentBitmaps:Array = [];
 		private var bitmapsGroup:Array = [currentBitmaps];
 		private var currentBitmapNames:ArrayCollection = new ArrayCollection([]);
 		private var bitmapNamesGroup:Array = [currentBitmapNames];
-		private var renderer:BitmapRenderer;
+		private var currentDisplayObjects:Array = [];
+		private var displayObjectsGroup:Array = [currentDisplayObjects];
+		private var renderer:Renderer;
 		private var rendererBlendMode:String = "normal";
 		private var rectangle:Rectangle;
 		private var center:Point;
@@ -90,7 +102,7 @@ package main.model
 			super(target);	
 		}
 		
-		public static function getInstance() : FXManager
+		public static function get _instance() : FXManager
 		{
 			if(!instance)
 			{
@@ -116,7 +128,7 @@ package main.model
 			return currentEmitterNames;
 		}
 		
-		public function getRenderer() : BitmapRenderer
+		public function getRenderer() : Renderer
 		{ 
 			return renderer;
 		}
@@ -178,6 +190,11 @@ package main.model
 			currentEmitters = bitmapEmitters;
 			desc.setEffect("bitmap");
 			addEmitter();
+			//	!!!	NEW
+			currentEmitters = displayObjectEmitters;
+			desc.setEffect("displayObject");
+			addEmitter();
+			
 			currentEmitters = pixelEmitters;
 			desc.setEffect("pixel");
 			addEmitter();
@@ -188,19 +205,26 @@ package main.model
 		{
 			clearEffect()
 			renderer = null;
+			if(value == "displayObject"){
+				currentEmitters = displayObjectEmitters;
+				currentEmitterNames = displayObjectEmitterNames;
+//				currentFilters = displayObjectFilters;
+				renderer = new DisplayObjectRenderer();
+			}
 			if(value == "pixel"){
 				currentEmitters = pixelEmitters;
 				currentEmitterNames = pixelEmitterNames;
 				currentFilters = pixelFilters;
 				renderer = new PixelRenderer(rectangle);
+				BitmapRenderer(renderer).blendMode = rendererBlendMode;
 			}
 			else if(value == "bitmap"){
 				currentEmitters = bitmapEmitters;
 				currentEmitterNames = bitmapEmitterNames;
 				currentFilters = bitmapFilters;
 				renderer = new BitmapRenderer(rectangle);
+				BitmapRenderer(renderer).blendMode = rendererBlendMode;
 			}
-			renderer.blendMode = rendererBlendMode;
 			desc.setEffect(value);
 			if(restart){ 
 				selectEmitter(0);
@@ -222,10 +246,12 @@ package main.model
 		
 		public function clearEffect() : void
 		{
-			for each(var e:Emitter2D in currentEmitters){
+			if(renderer is BitmapRenderer){
 				for each(var f:BitmapFilter in currentFilters){
-					renderer.removeFilter(f);
+					BitmapRenderer(renderer).removeFilter(f);
 				}
+			}
+			for each(var e:Emitter2D in currentEmitters){
 				e.stop();
 				e.killAllParticles();
 				renderer.removeEmitter(e);
@@ -237,8 +263,10 @@ package main.model
 			for each(var e:Emitter2D in currentEmitters){
 				e.start();
 				renderer.addEmitter(e);
+			}
+			if(renderer is BitmapRenderer){
 				for each(var f:BitmapFilter in currentFilters){
-					renderer.addFilter(f);
+					BitmapRenderer(renderer).addFilter(f);
 				}
 			}
 		}
@@ -260,10 +288,10 @@ package main.model
 			var actions:ArrayCollection = new ArrayCollection([]);
 			var initializers:Array = [];
 			
-			if(currentEmitters == pixelEmitters){
-				pixelEmitterNames.addItem("emitter");
-				emitter.counter = new Steady(2000);
-				desc.setProperty("counter", ["Steady", 2000]);
+			if(currentEmitters == bitmapEmitters){
+				bitmapEmitterNames.addItem("emitter");
+				emitter.counter = new Pulse(1, 30);
+				desc.setProperty("counter",["Pulse", 1, 30]);
 				
 				var move:Move = new Move();
 				emitter.addAction(move);
@@ -276,52 +304,17 @@ package main.model
 				
 				var alphaInit:AlphaInit = new AlphaInit(1, 1);
 				emitter.addInitializer(alphaInit);
-				desc.addInitializer(["AlphaInit", 1, 1]);
-				initializers["AlphaInit"] = alphaInit;
-				var colorInit:ColorInit = new ColorInit(0xff0000ff, 0xffffffff); 
-				emitter.addInitializer(colorInit);
-				initializers["ColorInit"] = colorInit;
-				desc.addInitializer(["ColorInit", 0xff0000ff, 0xffffffff]);
-				var lifeTime:Lifetime = new Lifetime(1,2);
-				emitter.addInitializer(lifeTime);
-				initializers["Lifetime"] = lifeTime;
-				desc.addInitializer(["Lifetime", 1, 2]);
-				var position:Position = new Position(new DiscSectorZone(center, 200, 0, 360, 0));
-				emitter.addInitializer(position);
-				initializers["Position"] = position;
-				desc.addInitializer(["Position", "DiscSectorZone", "Point", editor.canvas.width/2, editor.canvas.height/2, 200, 0, 360, 0]);
-				
-				pixelActionsGroup.push(actions);
-				pixelInitializersGroup.push(initializers);
-			}
-			else if(currentEmitters == bitmapEmitters){
-				bitmapEmitterNames.addItem("emitter");
-				emitter.counter = new Pulse(1, 30);
-				desc.setProperty("counter",["Pulse", 1, 30]);
-				
-				currentActions = bitmapActionsGroup[0];
-				move = new Move();
-				emitter.addAction(move);
-				actions.addItem(move);
-				desc.setProperty("actions", ["Move"]);
-				age = new Age();
-				emitter.addAction(age);
-				actions.addItem(age);
-				desc.setProperty("actions", ["Age"]);
-				
-				alphaInit = new AlphaInit(1, 1);
-				emitter.addInitializer(alphaInit);
 				initializers["AlphaInit"] = alphaInit;
 				desc.addInitializer(["AlphaInit", 1, 1]);
-				colorInit = new ColorInit(0xffff0000, 0xffffffff);
+				var colorInit:ColorInit = new ColorInit(0xffff0000, 0xffffffff);
 				emitter.addInitializer(colorInit);
 				initializers["ColorInit"] = colorInit;
 				desc.addInitializer(["ColorInit", 0xffff0000, 0xffffffff]);
-				lifeTime = new Lifetime(.5,1);
+				var lifeTime:Lifetime = new Lifetime(.5,1);
 				emitter.addInitializer(lifeTime);
 				initializers["Lifetime"] = lifeTime;
 				desc.addInitializer(["Lifetime", .5, 1]);
-				position = new Position(new DiscSectorZone(center,100, 0, 360, 0));
+				var position:Position = new Position(new DiscSectorZone(center,100, 0, 360, 0));
 				emitter.addInitializer(position);
 				initializers["Position"] = position;
 				desc.addInitializer(["Position", "DiscSectorZone", "Point", editor.canvas.width/2, editor.canvas.height/2, 100, 0, 360, 0]);
@@ -357,6 +350,90 @@ package main.model
 					emitter.addInitializer(sharedImages);
 				}
 			}
+			else if(currentEmitters == displayObjectEmitters){
+				displayObjectEmitterNames.addItem("emitter");
+				emitter.counter = new SineCounter(1, 30, 5);
+				desc.setProperty("counter", ["SineCounter", 1, 30,5]);
+				
+				move = new Move();
+				emitter.addAction(move);
+				actions.addItem(move);
+				desc.setProperty("actions", ["Move"]);
+				age = new Age();
+				emitter.addAction(age);
+				actions.addItem(age);
+				desc.setProperty("actions", ["Age"]);
+				
+				alphaInit = new AlphaInit(1, 1);
+				emitter.addInitializer(alphaInit);
+				initializers["AlphaInit"] = alphaInit;
+				desc.addInitializer(["AlphaInit", 1, 1]);
+				colorInit = new ColorInit(0xffff0000, 0xffffffff);
+				emitter.addInitializer(colorInit);
+				initializers["ColorInit"] = colorInit;
+				desc.addInitializer(["ColorInit", 0xffff0000, 0xffffffff]);
+				lifeTime = new Lifetime(.5,1);
+				emitter.addInitializer(lifeTime);
+				initializers["Lifetime"] = lifeTime;
+				desc.addInitializer(["Lifetime", .5, 1]);
+				position = new Position(new DiscSectorZone(center,100, 0, 360, 0));
+				emitter.addInitializer(position);
+				initializers["Position"] = position;
+				desc.addInitializer(["Position", "DiscSectorZone", "Point", editor.canvas.width/2, editor.canvas.height/2, 100, 0, 360, 0]);
+				rotation = new Rotation(0, 0);
+				emitter.addInitializer(rotation);
+				initializers["Rotation"] = rotation;
+				desc.addInitializer(["Rotation", 0, 0]);
+				rotateVelocity = new RotateVelocity(0, 0);
+				emitter.addInitializer(rotateVelocity);
+				initializers["RotateVelocity"] = rotateVelocity;
+				desc.addInitializer(["RotateVelocity", 0, 0]);
+				scaleImageInit = new ScaleImageInit(1, 1);
+				emitter.addInitializer(scaleImageInit);
+				initializers["ScaleImageInit"] = scaleImageInit;
+				desc.addInitializer(["ScaleImageInit", 1, 1]);
+				var imageClass:ImageClass = new ImageClass(Dot);	//	!!!	use image class of previous emitter in array
+				emitter.addInitializer(imageClass);
+				initializers["ImageClass"] = imageClass;
+				desc.addInitializer(["ImageClass", "Dot", 1, 0xFFFFFF, "normal"]);
+				
+				displayObjectActionsGroup.push(actions);
+				displayObjectInitializersGroup.push(initializers);
+			}
+			else if(currentEmitters == pixelEmitters){
+				pixelEmitterNames.addItem("emitter");
+				emitter.counter = new Steady(2000);
+				desc.setProperty("counter", ["Steady", 2000]);
+				
+				move = new Move();
+				emitter.addAction(move);
+				actions.addItem(move);
+				desc.setProperty("actions", ["Move"]);
+				age = new Age();
+				emitter.addAction(age);
+				actions.addItem(age);
+				desc.setProperty("actions", ["Age"]);
+				
+				alphaInit = new AlphaInit(1, 1);
+				emitter.addInitializer(alphaInit);
+				desc.addInitializer(["AlphaInit", 1, 1]);
+				initializers["AlphaInit"] = alphaInit;
+				colorInit = new ColorInit(0xff0000ff, 0xffffffff); 
+				emitter.addInitializer(colorInit);
+				initializers["ColorInit"] = colorInit;
+				desc.addInitializer(["ColorInit", 0xff0000ff, 0xffffffff]);
+				lifeTime = new Lifetime(1,2);
+				emitter.addInitializer(lifeTime);
+				initializers["Lifetime"] = lifeTime;
+				desc.addInitializer(["Lifetime", 1, 2]);
+				position = new Position(new DiscSectorZone(center, 200, 0, 360, 0));
+				emitter.addInitializer(position);
+				initializers["Position"] = position;
+				desc.addInitializer(["Position", "DiscSectorZone", "Point", editor.canvas.width/2, editor.canvas.height/2, 200, 0, 360, 0]);
+				
+				pixelActionsGroup.push(actions);
+				pixelInitializersGroup.push(initializers);
+			}			
 			selectEmitter(currentEmitters.length - 1);
 		}
 		
@@ -392,7 +469,12 @@ package main.model
 		{
 			currentEmitter = currentEmitters[index];
 			desc.emitterIndex = index;
-			if(currentEmitters == pixelEmitters){
+			if(currentEmitters == displayObjectEmitters){
+				currentInitializers = displayObjectInitializersGroup[index];
+				currentActions = displayObjectActionsGroup[index];
+				currentDisplayObjects = displayObjectsGroup[index];
+			}
+			else if(currentEmitters == pixelEmitters){
 				currentInitializers = pixelInitializersGroup[index];
 				currentActions = pixelActionsGroup[index];				
 			}
@@ -411,6 +493,28 @@ package main.model
 			currentEmitter.counter = c;
 			desc.setProperty("counter", params);
 			restartEffect();
+		}
+		
+		public function changeDisplayObject(params:Array) : void
+		{
+			clearEffect();
+			var descParams:Array = ["ImageClass"];
+			descParams = descParams.concat(params);
+			desc.removeInitializer("ImageClass");
+			desc.addInitializer(descParams);
+			
+			var imageClass:ImageClass = currentInitializers["ImageClass"];
+			currentEmitter.removeInitializer(imageClass);
+			var type:String = params.shift() as String;
+			var ci:ClassInfo = ClassInfo.forName("org.flintparticles.common.displayObjects." + type);
+			var displayObjectClass:Class = ci.getClass();
+			params.unshift(displayObjectClass);
+			var imageClassCI:ClassInfo = ClassInfo.forClass(ImageClass);
+			var con:Constructor = imageClassCI.getConstructor();
+			imageClass = con.newInstance(params);
+			currentEmitter.addInitializer(imageClass);
+			restartEffect();
+//			setEffect("displayObject");
 		}
 		
 		public function addImage(bmp:Bitmap, path:String) : void
@@ -519,6 +623,12 @@ package main.model
 				currentInitializersGroup = bitmapInitializersGroup = [];
 				bitmapFilters = newFilters = new ArrayCollection([]);
 			}
+			else if(type == "displayObject"){
+				displayObjectEmitters = emitters;
+				displayObjectEmitterNames.source = emitterNames;
+				currentActionsGroup = displayObjectActionsGroup = [];
+				currentInitializersGroup = displayObjectInitializersGroup = [];
+			}
 			
 			for(var j:int = 0; j < eLen; j++){
 				var emitter:Emitter = new Emitter2D();
@@ -565,8 +675,21 @@ package main.model
 				var initializers:XMLList = effect.emitter[j].initializers;
 				var currentInitializers:Array = [];
 				for each(node in initializers[0].children()){
+					var initializer:Initializer;
 					if(node.name() == "SharedImages") continue;
-					var initializer:Initializer = func(node);
+					else if(node.name() == "ImageClass"){
+						var imageClassParams:Array = [];
+						for each(var child:XML in node.children()){
+							imageClassParams.push(child.toString());
+						}
+						var imageClass:String = imageClassParams.shift().toString();
+						ci = ClassInfo.forName("org.flintparticles.common.displayObjects." + imageClass);
+						imageClassParams.unshift(ci.getClass());
+						ci = ClassInfo.forClass(ImageClass);
+						con = ci.getConstructor();
+						initializer = con.newInstance(imageClassParams);
+					}
+					else initializer = func(node);
 					emitter.addInitializer(initializer);
 					currentInitializers[node.name()] = initializer;
 				}
@@ -614,7 +737,7 @@ package main.model
 				return con.newInstance(params);
 			}
 			rendererBlendMode = effect.blendMode.toString();
-			if(type == "pixel") setEffect(type);
+			if(type == "pixel" || type == "displayObject") setEffect(type);
 			else if(type == "bitmap") setEffect(type, false);
 		}
 		
@@ -658,13 +781,13 @@ package main.model
 		{
 			currentFilters.addItem(f);
 			desc.addFilter(params);
-			renderer.addFilter(f, false);
+			BitmapRenderer(renderer).addFilter(f, false);
 		}
 		
 		public function removeFilter(index:int) : void
 		{
 			desc.removeFilter(index);
-			renderer.removeFilter(currentFilters[index]);
+			BitmapRenderer(renderer).removeFilter(currentFilters[index]);
 			currentFilters.source.splice(index, 1);
 		}
 	}

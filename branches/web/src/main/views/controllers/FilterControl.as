@@ -32,7 +32,7 @@ private var filterList:ArrayCollection = new ArrayCollection([]);
 
 public function init() : void
 {
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
 	_filterCombo.dataProvider = ["Blur", "Glow"];
 	
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);

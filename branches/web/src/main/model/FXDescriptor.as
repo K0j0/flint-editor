@@ -26,23 +26,38 @@ package main.model
 	
 	public class FXDescriptor
 	{
+		private static var instance:FXDescriptor;
 		private var fxManager:FXManager;
-		private var pixelEffect:XML = 
-									<effect type="pixel">
+		private var bitmapEffect:XML = 
+									<effect type="bitmap">
 										<filters />
 										<blendMode>normal</blendMode>
 									</effect>;
-		private var bitmapEffect:XML = 
-									<effect type="bitmap">
+		private var displayObjectEffect:XML = 
+									<effect type="displayObject">
+										<filters />
+										<blendMode>normal</blendMode>
+									</effect>;
+		private var pixelEffect:XML = 
+									<effect type="pixel">
 										<filters />
 										<blendMode>normal</blendMode>
 									</effect>;
 		private var currentEffect:XML;
 		private var eIndex:int = 0;	//	emitter index
 		
-		public function FXDescriptor()
+		public function FXDescriptor(privateClass:Private)
 		{
-			fxManager = FXManager.getInstance();			
+			fxManager = FXManager._instance;			
+		}
+		
+		public static function get _instance() : FXDescriptor
+		{
+			if(!instance)
+			{
+				instance = new FXDescriptor(new Private());
+			}
+			return instance;
 		}
 		
 		public function get effect() : XML
@@ -68,15 +83,7 @@ package main.model
 		public function addEmitter() : void
 		{
 			var emitterNode:XML;
-			if(currentEffect.@type == "pixel"){
-				emitterNode =
-								<emitter name="emitter">
-									<counter />
-									<initializers />
-									<actions />									
-								</emitter>;				
-			}
-			else if(currentEffect.@type == "bitmap"){
+			if(currentEffect.@type == "bitmap"){
 				emitterNode =
 								<emitter name="emitter">
 									<counter />
@@ -90,6 +97,24 @@ package main.model
 					var sharedImages:XML = currentEffect.emitter[emitterCount-1].initializers.SharedImages[0];
 					emitterNode.initializers.SharedImages = sharedImages;
 				}		
+			}
+			else if(currentEffect.@type == "displayObject"){
+				emitterNode =
+								<emitter name="emitter">
+									<counter />
+									<initializers />
+									<actions />									
+								</emitter>;
+				//	!!!	use display objects from other imageClasses?
+				
+			}
+			else if(currentEffect.@type == "pixel"){
+				emitterNode =
+								<emitter name="emitter">
+									<counter />
+									<initializers />
+									<actions />									
+								</emitter>;				
 			}
 			
 			currentEffect.appendChild(emitterNode);
@@ -108,8 +133,9 @@ package main.model
 		
 		public function setEffect(type:String) : void
 		{
-			if(type == "pixel") currentEffect = pixelEffect;
-			else if(type == "bitmap") currentEffect = bitmapEffect;
+			if(type == "bitmap") currentEffect = bitmapEffect;
+			else if(type == "displayObject") currentEffect = displayObjectEffect;
+			else if(type == "pixel") currentEffect = pixelEffect;
 			eIndex = 0;
 		}
 		
@@ -231,8 +257,12 @@ package main.model
 				bytes.writeUTFBytes(savedEffect.toXMLString());
 				bytes.writeBytes(imgBytes);
 			}
-			else{
+			else if(currentEffect == pixelEffect){
 				bytes.writeUTFBytes("p");
+				bytes.writeUTFBytes(savedEffect.toXMLString());
+			}
+			else if(currentEffect == displayObjectEffect){
+				bytes.writeUTFBytes("d");
 				bytes.writeUTFBytes(savedEffect.toXMLString());
 			}
 			return bytes;
@@ -246,6 +276,10 @@ package main.model
 			else if(type == "bitmap"){
 				bitmapEffect = effect;
 			}
+			else if(type == "displayObject"){
+				displayObjectEffect = effect;
+			}
+			
 			setEffect(type);
 		}
 		
@@ -446,4 +480,9 @@ package main.model
 			return particleClass;
 		}
 	}
+}
+
+class Private
+{
+	function Private() {}
 }
