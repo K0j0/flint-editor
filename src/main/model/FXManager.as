@@ -246,15 +246,15 @@ package main.model
 		
 		public function clearEffect() : void
 		{
-			for each(var e:Emitter2D in currentEmitters){
-				e.stop();
-				e.killAllParticles();
-				renderer.removeEmitter(e);
-			}
 			if(renderer is BitmapRenderer){
 				for each(var f:BitmapFilter in currentFilters){
 					BitmapRenderer(renderer).removeFilter(f);
 				}
+			}
+			for each(var e:Emitter2D in currentEmitters){
+				e.stop();
+				e.killAllParticles();
+				renderer.removeEmitter(e);
 			}
 		}
 		
@@ -513,7 +513,8 @@ package main.model
 			var con:Constructor = imageClassCI.getConstructor();
 			imageClass = con.newInstance(params);
 			currentEmitter.addInitializer(imageClass);
-			setEffect("displayObject");
+			restartEffect();
+//			setEffect("displayObject");
 		}
 		
 		public function addImage(bmp:Bitmap, path:String) : void

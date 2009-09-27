@@ -17,10 +17,12 @@
 
 
 import flash.display.DisplayObject;
+import flash.display.Sprite;
 import flash.events.Event;
 import flash.filesystem.File;
 import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
+import flash.geom.Rectangle;
 import flash.net.FileFilter;
 import flash.utils.ByteArray;
 
@@ -34,6 +36,7 @@ import mx.controls.Alert;
 import mx.events.MenuEvent;
 
 import org.flintparticles.common.renderers.Renderer;
+import org.flintparticles.twoD.renderers.DisplayObjectRenderer;
 
 private var currentFile:File = new File();
 private var fxManager:FXManager;
@@ -57,14 +60,17 @@ private var menuXML:XML =
 private function init() : void
 {
 	trace("Lez go");
-	gui_appMenuBar.showRoot = false;
-	gui_appMenuBar.dataProvider = menuXML;
-	gui_appMenuBar.addEventListener(MenuEvent.ITEM_CLICK, onSelectMenu);
+	_mainCanvas.scrollRect = new Rectangle(0,0, _mainCanvas.width, _mainCanvas.height);
+
+	_appMenuBar.showRoot = false;
+	_appMenuBar.dataProvider = menuXML;
+	_appMenuBar.addEventListener(MenuEvent.ITEM_CLICK, onSelectMenu);
 
 	var mouseControl:MouseControl = MouseControl.getInstance();
-	mouseControl.canvas = gui_mainCanvas;
+	mouseControl.canvas = _mainCanvas;
 	desc = FXDescriptor._instance
 	fxManager = FXManager._instance;
+	fxManager.addEventListener(EditorEvent.RENDERER_SWITCH, onRendererSwitch);
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
 	fxManager.initialize(this, desc);	
 }
@@ -78,12 +84,22 @@ private function onReady(e:EditorEvent) : void
 private function onUpdateReferences(e:EditorEvent = null) : void
 {
 	renderer = fxManager.getRenderer();
-	gui_mainCanvas.rawChildren.addChild(renderer as DisplayObject);
+	_mainCanvas.rawChildren.addChild(renderer as DisplayObject);
+}
+
+private function onRendererSwitch(e:EditorEvent) : void
+{
+	if(renderer is DisplayObjectRenderer){
+		if(acfTab.contains(Filters)) acfTab.removeChild(Filters);
+	}
+	else{
+		acfTab.addChild(Filters);
+	}
 }
 
 public function get canvas () : Canvas
 {
-	return gui_mainCanvas;
+	return _mainCanvas;
 }
 
 private function onSelectMenu(e:MenuEvent) : void
