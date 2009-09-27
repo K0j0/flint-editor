@@ -26,6 +26,7 @@ package main.model
 	
 	public class FXDescriptor
 	{
+		private static var instance:FXDescriptor;
 		private var fxManager:FXManager;
 		private var bitmapEffect:XML = 
 									<effect type="bitmap">
@@ -35,6 +36,7 @@ package main.model
 		private var displayObjectEffect:XML = 
 									<effect type="displayObject">
 										<filters />
+										<blendMode>normal</blendMode>
 									</effect>;
 		private var pixelEffect:XML = 
 									<effect type="pixel">
@@ -44,9 +46,18 @@ package main.model
 		private var currentEffect:XML;
 		private var eIndex:int = 0;	//	emitter index
 		
-		public function FXDescriptor()
+		public function FXDescriptor(privateClass:Private)
 		{
-			fxManager = FXManager.getInstance();			
+			fxManager = FXManager._instance;			
+		}
+		
+		public static function get _instance() : FXDescriptor
+		{
+			if(!instance)
+			{
+				instance = new FXDescriptor(new Private());
+			}
+			return instance;
 		}
 		
 		public function get effect() : XML
@@ -246,8 +257,12 @@ package main.model
 				bytes.writeUTFBytes(savedEffect.toXMLString());
 				bytes.writeBytes(imgBytes);
 			}
-			else{
+			else if(currentEffect == pixelEffect){
 				bytes.writeUTFBytes("p");
+				bytes.writeUTFBytes(savedEffect.toXMLString());
+			}
+			else if(currentEffect == displayObjectEffect){
+				bytes.writeUTFBytes("d");
 				bytes.writeUTFBytes(savedEffect.toXMLString());
 			}
 			return bytes;
@@ -261,6 +276,10 @@ package main.model
 			else if(type == "bitmap"){
 				bitmapEffect = effect;
 			}
+			else if(type == "displayObject"){
+				displayObjectEffect = effect;
+			}
+			
 			setEffect(type);
 		}
 		
@@ -461,4 +480,9 @@ package main.model
 			return particleClass;
 		}
 	}
+}
+
+class Private
+{
+	function Private() {}
 }

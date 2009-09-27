@@ -50,24 +50,25 @@
 			<mx:AddChild position="lastChild">
 				<mx:Label x="178" y="37" text="type"/>
 			</mx:AddChild>
-			<mx:AddChild position="lastChild">
+			<mx:AddChild position="lastChild" creationPolicy="all">
 				<mx:NumericStepper x="10" y="65" id="_displayObjectProp1" value="1" minimum="0" maximum="50" stepSize=".5" change="onUpdateDisplayObject()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="76" y="67" text="radius" id="label3"/>
 			</mx:AddChild>
-			<mx:AddChild position="lastChild">
+			<mx:AddChild position="lastChild" creationPolicy="all">
 				<mx:ColorPicker x="119" y="65" id="_displayObjectColor" selectedColor="#FFFFFF" change="onUpdateDisplayObject()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="149" y="67" text="color"/>
 			</mx:AddChild>
-			<mx:AddChild position="lastChild">
+			<mx:AddChild position="lastChild" creationPolicy="all">
 				<mx:NumericStepper x="10" y="95" id="_displayObjectProp2" value="1" minimum="0" maximum="50" stepSize=".5" change="onUpdateDisplayObject()"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:Label x="76" y="97" text="Label" id="label2"/>
-			</mx:AddChild><mx:AddChild position="lastChild">
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
 				<mx:Label x="178" y="202" text="image"/>
 			</mx:AddChild>
 			<mx:SetProperty target="{_rendererBlendCombo}" name="enabled" value="false"/>

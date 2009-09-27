@@ -22,28 +22,35 @@ import flash.events.IOErrorEvent;
 import flash.net.URLRequest;
 
 import main.events.EditorEvent;
+import main.model.FXDescriptor;
 import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
+import mx.controls.Alert;
 import mx.events.ListEvent;
 
 import org.flintparticles.common.renderers.Renderer;
 import org.flintparticles.twoD.renderers.BitmapRenderer;
 import org.flintparticles.twoD.renderers.DisplayObjectRenderer;
+import org.flintparticles.twoD.renderers.PixelRenderer;
 
 private var fxManager:FXManager;
+private var desc:FXDescriptor;
 private var renderer:Renderer;
 private var selectedImage:Object = {bitmap:null, index:0};
 private var bitmaps:Array;
-private var bitmapNames:ArrayCollection;
+private var bitmapNames:ArrayCollection = new ArrayCollection([]);
 private var imgIndex:int = -1;
 [Bindable]
 private var selectedImageName:String = "n/a";
 private var blendModesArray:Array = [];
+private var displayObjectsArray:Array = [];
+private var lastState:String;
 
 public function init() : void
 {
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
+	desc = FXDescriptor._instance;
 	_displayObjectComboBox.dataProvider = ["Dot", "Line", "RadialDot", "Rect", "Star"];
 	_imagesList.dataProvider = bitmapNames;
 	_rendererBlendCombo.dataProvider = ["add", "alpha", "darken", "difference", 
@@ -67,6 +74,12 @@ public function init() : void
 	blendModesArray["overlay"] = 11;
 	blendModesArray["screen"] = 12;
 	blendModesArray["subtract"] = 13;
+	
+	displayObjectsArray["Dot"] = 0;
+	displayObjectsArray["Line"] = 1;
+	displayObjectsArray["RadialDot"] = 2;
+	displayObjectsArray["Rect"] = 3;
+	displayObjectsArray["Star"] = 4;
 		
 	_imagesList.addEventListener(ListEvent.ITEM_DOUBLE_CLICK, onDoubleClickImagesList);
 	_imagesList.addEventListener(ListEvent.ITEM_EDIT_END, onChangeImageName);
@@ -77,50 +90,80 @@ public function init() : void
 private function onUpdateReferences(e:EditorEvent = null) : void
 {
 	renderer = fxManager.getRenderer();
-	if(bitmaps != fxManager.getBitmaps()){
-		bitmaps = fxManager.getBitmaps();
-		bitmapNames = fxManager.getBitmapNames();
-		if(bitmaps.length > 0){
-			selectedImage.bitmap = bitmaps[0];
-			selectedImageName = bitmapNames[0];
+	
+	var type:String;
+	if(renderer is PixelRenderer) type = "pixel";
+	else if(renderer is DisplayObjectRenderer){ 
+		type = "displayObject";
+		var displayObjectInfo:XMLList = desc.effect.emitter[desc.emitterIndex]..ImageClass;
+		var params:Array = [];
+		for each(var node:XML in displayObjectInfo.children()){
+			params.push(node.toString());
 		}
+		var blendMode:String = params.pop().toString();
+		_displayObjectBlendMode.selectedIndex = blendModesArray[blendMode];
+		var color:uint = Number(params.pop());
+		_displayObjectColor.selectedColor = color;
+		var name:String = params.shift().toString();
+		_displayObjectComboBox.selectedIndex = displayObjectsArray[name];
+		var val:Number = Number(params.shift());
+		_displayObjectProp1.value = val;
+		if(name == "Rect") _displayObjectProp2.value = Number(params[0]);
 	}
-	_imagesList.dataProvider = bitmapNames;
-	_removeImage.enabled = bitmaps.length > 1 ? true : false;
+	else{	//	bitmap renderer 
+		type = "bitmap";
+		if(bitmaps != fxManager.getBitmaps()){
+			bitmaps = fxManager.getBitmaps();
+			bitmapNames = fxManager.getBitmapNames();
+			if(bitmaps.length > 0){
+				selectedImage.bitmap = bitmaps[0];
+				selectedImageName = bitmapNames[0];
+			}
+		}
+		_imagesList.dataProvider = bitmapNames;
+		_removeImage.enabled = bitmaps.length > 1 ? true : false;
+	}
+	onChooseRendererState(type);
+}
+
+private function onChooseRendererState(state:String) : void
+{
+	lastState = currentState;
+	if(state == "bitmap"){
+		currentState = "bitmap";
+		_radioDisplayObject.enabled = true;
+		_radioBitmap.selected = true;
+		_radioBitmap.enabled = false;
+		_radioPixel.enabled = true;
+	}
+	else if(state == "displayObject"){
+		currentState = _displayObjectComboBox.selectedItem as String;
+		_radioDisplayObject.selected = true;
+		_radioDisplayObject.enabled = false;
+		_radioPixel.enabled = true;
+		_radioBitmap.enabled = true;
+	}
+	else if(state == "pixel") {
+		currentState = "pixel";
+		_radioDisplayObject.enabled = true;
+		_radioBitmap.enabled = true;
+		_radioPixel.selected = true;
+		_radioPixel.enabled = false;
+	}
 }
 
 private function onSelectRenderer(type:String) : void
 {
-	if(type == "bitmap"){
-		_radioDisplayObject.enabled = true;
-		_radioBitmap.enabled = false;
-		_radioPixel.enabled = true;
-		currentState = "bitmap";
-		if(bitmapNames.length == 0) onAddImage();
-		else{
-			fxManager.setEffect("bitmap");
-		}
-	}
-	else if(type == "displayObject"){
-		currentState = _displayObjectComboBox.selectedItem as String;
-		_radioDisplayObject.enabled = false;
-		_radioPixel.enabled = true;
-		_radioBitmap.enabled = true;
-		fxManager.setEffect("displayObject");
-	}
-	else if(type == "pixel") {
-		_radioDisplayObject.enabled = true;
-		_radioBitmap.enabled = true;
-		_radioPixel.enabled = false;
-		currentState = "pixel";
-		fxManager.setEffect("pixel");
-	}
+	onChooseRendererState(type);
+	if(type == "bitmap" && bitmapNames.length == 0) onAddImage();
+	else fxManager.setEffect(type);
 }
 
 private function onSelectDisplayObject() : void
 {
 	var displayObject:String = _displayObjectComboBox.selectedItem as String;
 	currentState = displayObject;
+	onUpdateDisplayObject();
 }
 
 private function onUpdateDisplayObject() : void
@@ -204,7 +247,11 @@ private function onCancel(e:Event) : void
 	if(bitmapNames.length == 0){
 		_radioBitmap.selected = false;
 		_radioPixel.selected = true;
-		onSelectRenderer("pixel");
+		if(lastState == "pixel") onSelectRenderer("pixel");
+		else{
+			currentState = lastState;
+			onSelectRenderer("displayObject");
+		}
 	}
 }
 
@@ -217,8 +264,12 @@ private function onImageLoaded(e:Event) : void
 
 private function onIOError(e:IOErrorEvent) : void
 {
-	trace("IO Error!!!");
+	Alert.show("IO Error\n\n" + e.text);
 	_radioBitmap.selected = false;
 	_radioPixel.selected = true;
-	fxManager.setEffect("pixel");
+	if(lastState == "pixel") onSelectRenderer("pixel");
+	else{
+		currentState = lastState;
+		onSelectRenderer("displayObject");
+	}
 }
