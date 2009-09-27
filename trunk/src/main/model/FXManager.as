@@ -102,7 +102,7 @@ package main.model
 			super(target);	
 		}
 		
-		public static function getInstance() : FXManager
+		public static function get _instance() : FXManager
 		{
 			if(!instance)
 			{
@@ -395,7 +395,7 @@ package main.model
 				var imageClass:ImageClass = new ImageClass(Dot);	//	!!!	use image class of previous emitter in array
 				emitter.addInitializer(imageClass);
 				initializers["ImageClass"] = imageClass;
-				desc.addInitializer(["ImageClass", "Dot"]);
+				desc.addInitializer(["ImageClass", "Dot", 1, 0xFFFFFF, "normal"]);
 				
 				displayObjectActionsGroup.push(actions);
 				displayObjectInitializersGroup.push(initializers);
@@ -498,6 +498,11 @@ package main.model
 		public function changeDisplayObject(params:Array) : void
 		{
 			clearEffect();
+			var descParams:Array = ["ImageClass"];
+			descParams = descParams.concat(params);
+			desc.removeInitializer("ImageClass");
+			desc.addInitializer(descParams);
+			
 			var imageClass:ImageClass = currentInitializers["ImageClass"];
 			currentEmitter.removeInitializer(imageClass);
 			var type:String = params.shift() as String;
@@ -615,6 +620,12 @@ package main.model
 				currentInitializersGroup = bitmapInitializersGroup = [];
 				bitmapFilters = newFilters = new ArrayCollection([]);
 			}
+			else if(type == "displayObject"){
+				displayObjectEmitters = emitters;
+				displayObjectEmitterNames.source = emitterNames;
+				currentActionsGroup = displayObjectActionsGroup = [];
+				currentInitializersGroup = displayObjectInitializersGroup = [];
+			}
 			
 			for(var j:int = 0; j < eLen; j++){
 				var emitter:Emitter = new Emitter2D();
@@ -661,8 +672,21 @@ package main.model
 				var initializers:XMLList = effect.emitter[j].initializers;
 				var currentInitializers:Array = [];
 				for each(node in initializers[0].children()){
+					var initializer:Initializer;
 					if(node.name() == "SharedImages") continue;
-					var initializer:Initializer = func(node);
+					else if(node.name() == "ImageClass"){
+						var imageClassParams:Array = [];
+						for each(var child:XML in node.children()){
+							imageClassParams.push(child.toString());
+						}
+						var imageClass:String = imageClassParams.shift().toString();
+						ci = ClassInfo.forName("org.flintparticles.common.displayObjects." + imageClass);
+						imageClassParams.unshift(ci.getClass());
+						ci = ClassInfo.forClass(ImageClass);
+						con = ci.getConstructor();
+						initializer = con.newInstance(imageClassParams);
+					}
+					else initializer = func(node);
 					emitter.addInitializer(initializer);
 					currentInitializers[node.name()] = initializer;
 				}
@@ -710,7 +734,7 @@ package main.model
 				return con.newInstance(params);
 			}
 			rendererBlendMode = effect.blendMode.toString();
-			if(type == "pixel") setEffect(type);
+			if(type == "pixel" || type == "displayObject") setEffect(type);
 			else if(type == "bitmap") setEffect(type, false);
 		}
 		

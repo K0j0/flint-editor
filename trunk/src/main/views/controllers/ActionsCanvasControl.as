@@ -38,7 +38,7 @@ private var mouseControl:MouseControl;
 
 public function inits() : void
 {
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
 	checkBoxGroup = CheckBoxGroup.getInstance();
 	mouseControl = MouseControl.getInstance();
 	actionsList = new ArrayCollection(["Accelerate", "AntiGravity", "ApproachNeighbours", "BoundingBox",

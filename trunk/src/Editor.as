@@ -37,7 +37,7 @@ import org.flintparticles.common.renderers.Renderer;
 
 private var currentFile:File = new File();
 private var fxManager:FXManager;
-private var desc:FXDescriptor = new FXDescriptor();
+private var desc:FXDescriptor;
 private var renderer:Renderer;
 private var menuXML:XML = 
 									<application>
@@ -63,7 +63,8 @@ private function init() : void
 
 	var mouseControl:MouseControl = MouseControl.getInstance();
 	mouseControl.canvas = gui_mainCanvas;
-	fxManager = FXManager.getInstance();
+	desc = FXDescriptor._instance
+	fxManager = FXManager._instance;
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
 	fxManager.initialize(this, desc);	
 }
@@ -158,6 +159,12 @@ private function onLoad() : void
 			var effect:XML = XML(stream.readUTFBytes(stream.bytesAvailable));
 			desc.effectLoaded("pixel", effect);
 			fxManager.generateEffect("pixel");
+			trace(effect);
+		}
+		else if(type == "d"){
+			effect = XML(stream.readUTFBytes(stream.bytesAvailable));
+			desc.effectLoaded("displayObject", effect);
+			fxManager.generateEffect("displayObject");
 			trace(effect);
 		}
 		else if(type == "b"){	

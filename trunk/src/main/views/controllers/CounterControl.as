@@ -16,6 +16,7 @@
  */
 
 import main.events.EditorEvent;
+import main.model.FXDescriptor;
 import main.model.FXManager;
 
 import mx.collections.ArrayCollection;
@@ -25,6 +26,7 @@ import org.spicefactory.lib.reflect.ClassInfo;
 import org.spicefactory.lib.reflect.Constructor;
 
 private var fxManager:FXManager;
+private var desc:FXDescriptor;
 private var counterName:String;
 private var counterList:ArrayCollection = new ArrayCollection(["Blast", "PerformanceAdjusted", "Pulse", "Random", "SineCounter", "Steady", "TimePeriod"]);
 
@@ -32,14 +34,20 @@ public function init() : void
 {
 	_counterCombo.dataProvider = counterList;
 	_counterCombo.selectedIndex = 5;
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
+	desc = FXDescriptor._instance;
 	
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
 }
 
 private function onUpdateReferences(e:EditorEvent = null) : void
 {
-	var params:Array = fxManager.getCounterInfo();
+	var counter:XML = desc.effect.emitter[desc.emitterIndex].counter.*[0];
+	var params:Array = [counter.name().toString()];
+	for each(var node:XML in counter.children()){
+		params.push(Number(node.toString()))
+	}
+//	fxManager.getCounterInfo();
 	counterName = params.shift();
 	currentState = counterName;
 	

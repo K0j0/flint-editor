@@ -37,7 +37,7 @@ private var initializers:Array;
 
 public function init() : void
 {
-	fxManager = FXManager.getInstance();
+	fxManager = FXManager._instance;
 	
 	fxManager.addEventListener(EditorEvent.RENDERER_SWITCH, onRendererSwitch);
 	fxManager.addEventListener(EditorEvent.UPDATE_REFERENCES, onUpdateReferences);
